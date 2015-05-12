@@ -1,95 +1,91 @@
+/**
+*Local Variables
+**/
 var table = new Array();
+var rules = new Array();
 var td = document.getElementsByTagName('td');
 var player = 'white';
-var rules = new Array();
 var rulesOrder = 0;
 
-
-rules[1] = new Array();
-
-// constructor of tokens
+// constructor of Token object
 var Token = function(i, j, player) {
 	this.i = i;
 	this.j = j;
 	this.player = player;
-	this.neighbour;
-
+	this.neighbour = 0;
 };
 
 // create the table
 function createTab() {
-	for (i = 0; i < 19; i++)
-	{
+	for (i = 0; i < 19; i++) {
 		table[i] = [];
-
-		for (j = 0; j < 19; j++)
-		{
+		for (j = 0; j < 19; j++) {
 			table[i][j] = 0;
 		}
 	}
 }
+createTab();
 
 // Draw the game into the DOM
 function drawGame() {
 	var html = document.getElementById("board");
 	var draw = "";
 	
-	for (i = 1; i < 20; i++)
-	{
+	for (i = 1; i < 20; i++) {
 		draw += "<tr>";
 		for (j = 1; j < 20; j++) {
 			if ((i ==1) && (j == 1)) {
-				draw += "<td class = 'checkerboardCornerTopLeft' id='"+ i + "_" + j + "'></td>";
+				draw += "<td class = 'checkerboardCornerTopLeft'";
 			} else if ((i ==1) && (j == 19)) {
-				draw += "<td class = 'checkerboardCornerTopRight' id='"+ i + "_" + j + "'></td>";
+				draw += "<td class = 'checkerboardCornerTopRight'";
 			} else if ((i ==19) && (j == 1)) {
-				draw += "<td class = 'checkerboardCornerBottomLeft' id='"+ i + "_" + j + "'></td>";
+				draw += "<td class = 'checkerboardCornerBottomLeft'";
 			} else if ((i ==19) && (j == 19)) {
-				draw += "<td class = 'checkerboardCornerBottomRight' id='"+ i + "_" + j + "'></td>";
+				draw += "<td class = 'checkerboardCornerBottomRight'";
 			} else if (j == 1) {
-				draw += "<td class = 'checkerboardLeft' id='"+ i + "_" + j + "'></td>";
+				draw += "<td class = 'checkerboardLeft'";
 			} else if (i == 1) {
-				draw += "<td class = 'checkerboardTop' id='"+ i + "_" + j + "'></td>";
+				draw += "<td class = 'checkerboardTop'";
 			} else if (j == 19) {
-				draw += "<td class = 'checkerboardRight' id='"+ i + "_" + j + "'></td>";
+				draw += "<td class = 'checkerboardRight'";
 			} else if (i == 19) {
-				draw += "<td class = 'checkerboardBottom' id='"+ i + "_" + j + "'></td>";
+				draw += "<td class = 'checkerboardBottom'";
 			} else {
-				draw += "<td class = 'checkerboardCross' id='"+ i + "_" + j + "'></td>";
+				draw += "<td class = 'checkerboardCross'";
 			}
+			draw += "id='"+ i + "_" + j + "'></td>";
 		}
 		draw += "</tr>";
 	}
 	html.innerHTML = draw;
 }
+drawGame();
 
-// Add click on the board 
-function live(eventType, elementId, cb) {
+// Function Event Listerner on click
+function live(eventType, elementId, callback) {
     document.addEventListener(eventType, function (event) {
         if (event.target.id === elementId) {
-            cb.call(event.target, event);
+            callback.call(event.target, event);
         }
     });
 }
 
+// Function who calcuate how many neighbour each token have
 function neighbour() {
 	for (k = 0; k < rules.length; k++) {
 		for (l = 0; l < rules.length; l++) {
-			console.log('yo');
-			if (((rules[k].i) + 1) == (rules[l].i)) {
-				console.log ('done');
+			if ((rules[k].i + 1) == (rules[l].i)) {
+				console.log('capture!');
+			} else if ((rules[k].i) == (rules[l].i + 1)) {
+				console.log('capture!');
 			}
 		}
 	}
 }
 
-createTab();
-drawGame();
-
+// Loop who add click on each intersection
 for (var i = 0; i < td.length; i++) {
-
 	var currentElement = td[i];
-
 	live('click', currentElement.id, function() {
 		var explode = this.id.split('_');
 		if (player == 'white') {
@@ -101,7 +97,6 @@ for (var i = 0; i < td.length; i++) {
 			player = 'white';
 			rules[rulesOrder] = new Token(explode[0], explode[1], 'black');
 		}
-		console.log(rules);
 		rulesOrder++;
 		neighbour();
 	});
