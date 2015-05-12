@@ -1,7 +1,7 @@
 var tableau = new Array();
 var td = document.getElementsByTagName('td');
 
-// Création du tableau
+// create the table
 function createTab() {
 	for (i = 0; i < 19; i++)
 	{
@@ -14,7 +14,7 @@ function createTab() {
 	}
 }
 
-// Fonction qui écrit le tableau Game dans l'html
+// Draw the game into the DOM
 function drawGame() {
 	var html = document.getElementById("board");
 	var draw = "";
@@ -48,7 +48,7 @@ function drawGame() {
 	html.innerHTML = draw;
 }
 
-// Fonction qui génère le click sur les cellules
+// Add click on the board 
 function live(eventType, elementId, cb) {
     document.addEventListener(eventType, function (event) {
         if (event.target.id === elementId) {
@@ -59,7 +59,6 @@ function live(eventType, elementId, cb) {
 
 createTab();
 drawGame();
-console.log(tableau);
 
 for (var i = 0; i < td.length; i++) {
 
