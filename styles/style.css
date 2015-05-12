@@ -1,0 +1,10 @@
+h1 {
+	text-align: center;
+}
+
+#areagame {
+	background-color: black;
+	margin: auto;
+	width: 400px;
+	height: 400px;
+}
