@@ -1,10 +1,7 @@
 var tableau = new Array();
+var tableauHTML = getElementById('areaGame');
 
-/**
-*Grille
-*
-**/
-
+// Création du tableau
 function creerTableau() {
 	for (i = 0; i < 19; i++)
 	{
