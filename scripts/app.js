@@ -1,4 +1,5 @@
 var tableau = new Array();
+var td = document.getElementsByTagName('td');
 
 // Création du tableau
 function createTab() {
@@ -21,9 +22,7 @@ function drawGame() {
 	for (i = 1; i < 20; i++)
 	{
 		draw += "<tr>";
-
-		for (j = 1; j < 20; j++)
-		{
+		for (j = 1; j < 20; j++) {
 			if ((i ==1) && (j == 1)) {
 				draw += "<td class = 'checkerboardCornerTopLeft' id='"+ i + "_" + j + "'></td>";
 			} else if ((i ==1) && (j == 19)) {
@@ -41,7 +40,7 @@ function drawGame() {
 			} else if (i == 19) {
 				draw += "<td class = 'checkerboardBottom' id='"+ i + "_" + j + "'></td>";
 			} else {
-			draw += "<td class = 'checkerboardCross' id='"+ i + "_" + j + "'></td>";
+				draw += "<td class = 'checkerboardCross' id='"+ i + "_" + j + "'></td>";
 			}
 		}
 		draw += "</tr>";
@@ -49,6 +48,27 @@ function drawGame() {
 	html.innerHTML = draw;
 }
 
+// Fonction qui génère le click sur les cellules
+function live(eventType, elementId, cb) {
+    document.addEventListener(eventType, function (event) {
+        if (event.target.id === elementId) {
+            cb.call(event.target, event);
+        }
+    });
+}
+
 createTab();
 drawGame();
 console.log(tableau);
+
+for (var i = 0; i < td.length; i++) {
+
+	var currentElement = td[i];
+
+	live('click', currentElement.id, function() {
+		var explode = this.id.split('_');
+		var isAlive = tableau[explode[0]][explode[1]];
+
+		console.log('click');
+	});
+}
