@@ -2,6 +2,7 @@ var table = new Array();
 var td = document.getElementsByTagName('td');
 var player = 'white';
 var rules = new Array();
+var rulesOrder = 0;
 
 
 rules[1] = new Array();
@@ -75,7 +76,7 @@ function neighbour() {
 	for (k = 0; k < rules.length; k++) {
 		for (l = 0; l < rules.length; l++) {
 			console.log('yo');
-			if (((rules[k].Token.i) + 1) == (rules[l].Token.i)) {
+			if (((rules[k].i) + 1) == (rules[l].i)) {
 				console.log ('done');
 			}
 		}
@@ -94,13 +95,14 @@ for (var i = 0; i < td.length; i++) {
 		if (player == 'white') {
 			this.className = 'tokenWhite';
 			player = 'black';
-			rules[explode] = new Token(explode[0], explode[1], 'white');
+			rules[rulesOrder] = new Token(explode[0], explode[1], 'white');
 		} else {
 			this.className = 'tokenBlack';
 			player = 'white';
-			rules[explode] = new Token(explode[0], explode[1], 'black');
+			rules[rulesOrder] = new Token(explode[0], explode[1], 'black');
 		}
 		console.log(rules);
+		rulesOrder++;
 		neighbour();
 	});
 }
