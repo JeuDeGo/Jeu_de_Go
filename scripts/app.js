@@ -9,8 +9,8 @@ var rulesOrder = 0;
 
 // constructor of Token object
 var Token = function(i, j, player) {
-	this.i = i;
-	this.j = j;
+	this.i = parseInt(i);
+	this.j = parseInt(j);
 	this.player = player;
 	this.neighbour = 0;
 };
@@ -63,21 +63,33 @@ drawGame();
 
 // Function Event Listerner on click
 function live(eventType, elementId, callback) {
-    document.addEventListener(eventType, function (event) {
-        if (event.target.id === elementId) {
-            callback.call(event.target, event);
-        }
-    });
+  document.addEventListener(eventType, function (event) {
+      if (event.target.id === elementId) {
+        callback.call(event.target, event);
+      }
+  });
 }
 
 // Function who calcuate how many neighbour each token have
 function neighbour() {
 	for (k = 0; k < rules.length; k++) {
+		rules[k].neighbour = 0;
 		for (l = 0; l < rules.length; l++) {
-			if ((rules[k].i + 1) == (rules[l].i)) {
-				console.log('capture!');
-			} else if ((rules[k].i) == (rules[l].i + 1)) {
-				console.log('capture!');
+			if ((k != l) && ((rules[k].i) == (rules[l].i)) && ((rules[k].j) == (rules[l].j + 1))) {
+				console.log('token ' + rules[k].i + '_' + rules[k].j + ' got a neighbour on his right');
+				rules[k].neighbour++;
+			}
+			if ((k != l) && ((rules[k].i) == (rules[l].i)) && ((rules[k].j) == (rules[l].j - 1))) {
+				console.log('token ' + rules[k].i + '_' + rules[k].j + ' got a neighbour on his left');
+				rules[k].neighbour++;
+			}
+			if ((k != l) && ((rules[k].i) == (rules[l].i + 1)) && ((rules[k].j) == (rules[l].j))) {
+				console.log('token ' + rules[k].i + '_' + rules[k].j + ' got a neighbour on his bottom');
+				rules[k].neighbour++;
+			}
+			if ((k != l) && ((rules[k].i) == (rules[l].i - 1)) && ((rules[k].j) == (rules[l].j))) {
+				console.log('token ' + rules[k].i + '_' + rules[k].j + ' got a neighbour on his top');
+				rules[k].neighbour++;
 			}
 		}
 	}
