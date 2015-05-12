@@ -34,24 +34,25 @@ function drawGame() {
 	for (i = 1; i < 20; i++) {
 		draw += "<tr>";
 		for (j = 1; j < 20; j++) {
+			draw += "<td class = "
 			if ((i ==1) && (j == 1)) {
-				draw += "<td class = 'checkerboardCornerTopLeft'";
+				draw += "'checkerboardCornerTopLeft'";
 			} else if ((i ==1) && (j == 19)) {
-				draw += "<td class = 'checkerboardCornerTopRight'";
+				draw += "'checkerboardCornerTopRight'";
 			} else if ((i ==19) && (j == 1)) {
-				draw += "<td class = 'checkerboardCornerBottomLeft'";
+				draw += "'checkerboardCornerBottomLeft'";
 			} else if ((i ==19) && (j == 19)) {
-				draw += "<td class = 'checkerboardCornerBottomRight'";
+				draw += "'checkerboardCornerBottomRight'";
 			} else if (j == 1) {
-				draw += "<td class = 'checkerboardLeft'";
+				draw += "'checkerboardLeft'";
 			} else if (i == 1) {
-				draw += "<td class = 'checkerboardTop'";
+				draw += "'checkerboardTop'";
 			} else if (j == 19) {
-				draw += "<td class = 'checkerboardRight'";
+				draw += "'checkerboardRight'";
 			} else if (i == 19) {
-				draw += "<td class = 'checkerboardBottom'";
+				draw += "'checkerboardBottom'";
 			} else {
-				draw += "<td class = 'checkerboardCross'";
+				draw += "'checkerboardCross'";
 			}
 			draw += "id='"+ i + "_" + j + "'></td>";
 		}
