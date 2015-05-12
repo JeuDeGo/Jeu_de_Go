@@ -20,46 +20,50 @@ td {
 }
 
 .checkerboardCornerTopLeft {
-    background-color:#FFF;
     background:url('../images/checkerboardCornerTopLeft.jpg');
+    cursor: pointer;
 }
 
 .checkerboardCornerTopRight {
-    background-color:#FFF;
     background:url('../images/checkerboardCornerTopRight.jpg');
+    cursor: pointer;
 }
 
 .checkerboardCornerBottomLeft {
-    background-color:#FFF;
     background:url('../images/checkerboardCornerBottomLeft.jpg');
+    cursor: pointer;
 }
 
 .checkerboardCornerBottomRight {
-    background-color:#FFF;
     background:url('../images/checkerboardCornerBottomRight.jpg');
+    cursor: pointer;
 }
 
 .checkerboardLeft {
-    background-color:#FFF;
     background:url('../images/checkerboardLeft.jpg');
+    cursor: pointer;
 }
 
 .checkerboardTop {
-    background-color:#FFF;
     background:url('../images/checkerboardTop.jpg');
+    cursor: pointer;
 }
 
 .checkerboardRight {
-    background-color:#FFF;
     background:url('../images/checkerboardRight.jpg');
+    cursor: pointer;
 }
 
 .checkerboardBottom {
-    background-color:#FFF;
     background:url('../images/checkerboardBottom.jpg');
+    cursor: pointer;
 }
 
 .checkerboardCross {
-    background-color:#FFF;
     background:url('../images/checkerboardCross.jpg');
+    cursor: pointer;
+}
+
+.token {
+	background:url('../images/token.jpg');
 }

@@ -67,8 +67,7 @@ for (var i = 0; i < td.length; i++) {
 
 	live('click', currentElement.id, function() {
 		var explode = this.id.split('_');
-		var isAlive = tableau[explode[0]][explode[1]];
-
-		console.log('click');
-	});
+		this.className = 'token';
+		console.log(explode);
+		});
 }
