@@ -21,9 +21,5 @@ td {
 
 .checkerboard {
     background-color:#FFF;
-    border: 1px solid black;
-}
-
-.notIntersection {
-	border: none;
+    background:url('../images/checkerboard1.jpg');
 }

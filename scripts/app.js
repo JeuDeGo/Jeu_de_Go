@@ -25,7 +25,7 @@ function drawGame() {
 		for (j = 1; j < 20; j++)
 		{
 			if ((i == 1) || (j == 1)) {
-				draw += "<td class = 'checkerboard notIntersection' id='"+ i + "_" + j + "'></td>";
+				draw += "<td class = 'checkerboard' id='"+ i + "_" + j + "'></td>";
 			} else {
 			draw += "<td class = 'checkerboard' id='"+ i + "_" + j + "'></td>";
 			}
