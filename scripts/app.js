@@ -3,11 +3,16 @@ var td = document.getElementsByTagName('td');
 var player = 'white';
 var rules = new Array();
 
-// constructor of 
+
+rules[1] = new Array();
+
+// constructor of tokens
 var Token = function(i, j, player) {
 	this.i = i;
 	this.j = j;
 	this.player = player;
+	this.neighbour;
+
 };
 
 // create the table
@@ -66,6 +71,17 @@ function live(eventType, elementId, cb) {
     });
 }
 
+function neighbour() {
+	for (k = 0; k < rules.length; k++) {
+		for (l = 0; l < rules.length; l++) {
+			console.log('yo');
+			if (((rules[k].Token.i) + 1) == (rules[l].Token.i)) {
+				console.log ('done');
+			}
+		}
+	}
+}
+
 createTab();
 drawGame();
 
@@ -78,12 +94,13 @@ for (var i = 0; i < td.length; i++) {
 		if (player == 'white') {
 			this.className = 'tokenWhite';
 			player = 'black';
-			rules[explode] = new Token(i, j, 'white');
+			rules[explode] = new Token(explode[0], explode[1], 'white');
 		} else {
 			this.className = 'tokenBlack';
 			player = 'white';
-			rules[explode] = new Token(i, j, 'black');
+			rules[explode] = new Token(explode[0], explode[1], 'black');
 		}
 		console.log(rules);
-		});
+		neighbour();
+	});
 }
