@@ -1,15 +1,24 @@
-var tableau = new Array();
+var table = new Array();
 var td = document.getElementsByTagName('td');
+var player = 'white';
+var rules = new Array();
+
+// constructor of 
+var Token = function(i, j, player) {
+	this.i = i;
+	this.j = j;
+	this.player = player;
+};
 
 // create the table
 function createTab() {
 	for (i = 0; i < 19; i++)
 	{
-		tableau[i] = [];
+		table[i] = [];
 
 		for (j = 0; j < 19; j++)
 		{
-			tableau[i][j] = 0;
+			table[i][j] = 0;
 		}
 	}
 }
@@ -66,7 +75,15 @@ for (var i = 0; i < td.length; i++) {
 
 	live('click', currentElement.id, function() {
 		var explode = this.id.split('_');
-		this.className = 'token';
-		console.log(explode);
+		if (player == 'white') {
+			this.className = 'tokenWhite';
+			player = 'black';
+			rules[explode] = new Token(i, j, 'white');
+		} else {
+			this.className = 'tokenBlack';
+			player = 'white';
+			rules[explode] = new Token(i, j, 'black');
+		}
+		console.log(rules);
 		});
 }

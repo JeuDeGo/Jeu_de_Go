@@ -3,6 +3,7 @@ h1 {
 	font-size: 24px;
 	font-family: 'Futura';
 	padding-bottom: 40px;
+	padding-top: 10px;
 }
 
 #areagame {
@@ -64,6 +65,10 @@ td {
     cursor: pointer;
 }
 
-.token {
-	background:url('../images/token.jpg');
+.tokenWhite {
+	background:url('../images/tokenWhite.jpg');
+}
+
+.tokenBlack {
+	background:url('../images/tokenBlack.jpg');
 }
