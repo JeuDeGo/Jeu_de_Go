@@ -15,7 +15,7 @@ function createTab() {
 
 // Fonction qui écrit le tableau Game dans l'html
 function drawGame() {
-	var html = document.getElementById("plateau");
+	var html = document.getElementById("board");
 	var draw = "";
 	
 	for (i = 1; i < 20; i++)
@@ -24,7 +24,11 @@ function drawGame() {
 
 		for (j = 1; j < 20; j++)
 		{
-			draw += "<td class = 'damier' id='"+ i + "_" + j + "'></td>";
+			if ((i == 1) || (j == 1)) {
+				draw += "<td class = 'checkerboard notIntersection' id='"+ i + "_" + j + "'></td>";
+			} else {
+			draw += "<td class = 'checkerboard' id='"+ i + "_" + j + "'></td>";
+			}
 		}
 		draw += "</tr>";
 	}
