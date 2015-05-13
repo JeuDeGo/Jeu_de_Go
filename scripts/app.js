@@ -78,24 +78,13 @@ function neighbour() {
 		rules[k].ennemi = 0;
 		rules[k].friend = 0;
 		for (l = 0; l < rules.length; l++) {
-			// enemi
+			// ennemi
 			if ((k != l) && (rules[k].player != rules[l].player)) {
-				// ennemi on right
-				if (((rules[k].i) == (rules[l].i)) && ((rules[k].j) == (rules[l].j + 1))) {
+				if((((rules[k].i) == (rules[l].i)) && ((rules[k].j) == (rules[l].j + 1))) ||	//right
+					(((rules[k].i) == (rules[l].i)) && ((rules[k].j) == (rules[l].j - 1))) ||		// left
+					(((rules[k].i) == (rules[l].i + 1)) && ((rules[k].j) == (rules[l].j))) ||		// bottom
+					(((rules[k].i) == (rules[l].i - 1)) && ((rules[k].j) == (rules[l].j))))			//top
 					rules[k].ennemi++;
-				}
-				// ennemi on left
-				if (((rules[k].i) == (rules[l].i)) && ((rules[k].j) == (rules[l].j - 1))) {
-					rules[k].ennemi++;
-				}
-				// ennemi on bottom
-				if (((rules[k].i) == (rules[l].i + 1)) && ((rules[k].j) == (rules[l].j))) {
-					rules[k].ennemi++;
-				}
-				// ennemi on top
-				if (((rules[k].i) == (rules[l].i - 1)) && ((rules[k].j) == (rules[l].j))) {
-					rules[k].ennemi++;
-				}
 			}
 			// friend
 			if ((k != l) && (rules[k].player == rules[l].player)) {
