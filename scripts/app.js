@@ -80,7 +80,7 @@ function neighbour() {
 		for (l = 0; l < rules.length; l++) {
 			// ennemi
 			if ((k != l) && (rules[k].player != rules[l].player)) {
-				if((((rules[k].i) == (rules[l].i)) && ((rules[k].j) == (rules[l].j + 1))) ||	//right
+				if ((((rules[k].i) == (rules[l].i)) && ((rules[k].j) == (rules[l].j + 1))) || //right
 					(((rules[k].i) == (rules[l].i)) && ((rules[k].j) == (rules[l].j - 1))) ||		// left
 					(((rules[k].i) == (rules[l].i + 1)) && ((rules[k].j) == (rules[l].j))) ||		// bottom
 					(((rules[k].i) == (rules[l].i - 1)) && ((rules[k].j) == (rules[l].j))))			//top
@@ -88,22 +88,11 @@ function neighbour() {
 			}
 			// friend
 			if ((k != l) && (rules[k].player == rules[l].player)) {
-				// friend on right
-				if (((rules[k].i) == (rules[l].i)) && ((rules[k].j) == (rules[l].j + 1))) {
+				if ((((rules[k].i) == (rules[l].i)) && ((rules[k].j) == (rules[l].j + 1))) || //right
+					(((rules[k].i) == (rules[l].i)) && ((rules[k].j) == (rules[l].j - 1))) ||		// left
+					(((rules[k].i) == (rules[l].i + 1)) && ((rules[k].j) == (rules[l].j))) ||		// bottom
+					(((rules[k].i) == (rules[l].i - 1)) && ((rules[k].j) == (rules[l].j))))			//top
 					rules[k].friend++;
-				}
-				// friend on left
-				if (((rules[k].i) == (rules[l].i)) && ((rules[k].j) == (rules[l].j - 1))) {
-					rules[k].friend++;
-				}
-				// friend on bottom
-				if (((rules[k].i) == (rules[l].i + 1)) && ((rules[k].j) == (rules[l].j))) {
-					rules[k].friend++;
-				}
-				// friend on top
-				if (((rules[k].i) == (rules[l].i - 1)) && ((rules[k].j) == (rules[l].j))) {
-					rules[k].friend++;
-				}
 			}
 		}
 	}
