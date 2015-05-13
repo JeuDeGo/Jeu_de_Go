@@ -95,6 +95,7 @@ function neighbour() {
 			}
 		}
 	}
+	removeToken();
 }
 
 // Loop who add click on each intersection
@@ -114,4 +115,14 @@ for (var i = 0; i < td.length; i++) {
 		rulesOrder++;
 		neighbour();
 	});
+}
+
+// Function who remove the token circled by 4 ennemis
+function removeToken() {
+	for (i = 0; i < rules.length; i++) {
+		if ((rules[i].friend == 0) && (rules[i].ennemi == 4)) {
+			var removeIt = document.getElementById(rules[i].i + '_' + rules[i].j);
+			removeIt.className = 'checkerboardCross';
+		}
+	}
 }
