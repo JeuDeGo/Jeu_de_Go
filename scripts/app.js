@@ -126,7 +126,7 @@ function removeToken() {
 			var removeIt = document.getElementById(rules[i].i + '_' + rules[i].j);
 			removeIt.className = 'checkerboardCross'; // Change class name of current element
 			rules.splice(rules[i].tabPosition, 1); // Delete token in rules tab
-			for (j = i; j < rules.length; j++) rules[j].tabPosition--; // actualise table position of all token
+			for (j = 0; j < rules.length; j++) rules[j].tabPosition = j; // actualise table position of all token
 		}
 	}
 }
