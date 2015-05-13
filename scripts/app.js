@@ -5,12 +5,12 @@ var table = new Array();
 var rules = new Array();
 var td = document.getElementsByTagName('td');
 var player = 'white';
-var rulesOrder = 0;
 
 // constructor of Token object
-var Token = function(i, j, player) {
+var Token = function(i, j, player, tabPosition) {
 	this.i = parseInt(i);
 	this.j = parseInt(j);
+	this.tabPosition = parseInt(tabPosition);
 	this.player = player;
 	this.ennemi = 0;
 	this.friend = 0;
@@ -105,14 +105,13 @@ for (var i = 0; i < td.length; i++) {
 		var explode = this.id.split('_');
 		if (player == 'white') {
 			this.className = 'tokenWhite';
+			rules[rules.length] = new Token(explode[0], explode[1], 'white', rules.length);
 			player = 'black';
-			rules[rulesOrder] = new Token(explode[0], explode[1], 'white');
 		} else {
 			this.className = 'tokenBlack';
+			rules[rules.length] = new Token(explode[0], explode[1], 'black', rules.length);
 			player = 'white';
-			rules[rulesOrder] = new Token(explode[0], explode[1], 'black');
 		}
-		rulesOrder++;
 		neighbour();
 	});
 }
@@ -122,7 +121,9 @@ function removeToken() {
 	for (i = 0; i < rules.length; i++) {
 		if ((rules[i].friend == 0) && (rules[i].ennemi == 4)) {
 			var removeIt = document.getElementById(rules[i].i + '_' + rules[i].j);
-			removeIt.className = 'checkerboardCross';
+			removeIt.className = 'checkerboardCross'; // Change class name of current element
+			rules.splice(rules[i].tabPosition, 1); // Delete token in rules tab
+			for (j = i; j < rules.length; j++) rules[j].tabPosition--; // actualise table position of all token
 		}
 	}
 }
