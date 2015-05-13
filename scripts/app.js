@@ -6,17 +6,27 @@ var rules = new Array();
 var td = document.getElementsByTagName('td');
 var player = 'white';
 
-// constructor of Token object
-var Token = function(i, j, player, tabPosition) {
+/**
+*constructor of Token object
+**/
+var White = function(i, j, tabPosition) {
 	this.i = parseInt(i);
 	this.j = parseInt(j);
 	this.tabPosition = parseInt(tabPosition);
-	this.player = player;
 	this.ennemi = 0;
 	this.friend = 0;
+	this.friendTabPosition = new Array();
+};
+var Black = function(i, j, tabPosition) {
+	this.i = parseInt(i);
+	this.j = parseInt(j);
+	this.tabPosition = parseInt(tabPosition);
+	this.ennemi = 0;
+	this.friend = 0;
+	this.friendTabPosition = new Array();
 };
 
-// create the table
+// Function who create the table
 function createTab() {
 	for (i = 0; i < 19; i++) {
 		table[i] = [];
@@ -27,7 +37,7 @@ function createTab() {
 }
 createTab();
 
-// Draw the game into the DOM
+// Function who draw the game into the DOM
 function drawGame() {
 	var html = document.getElementById("board");
 	var draw = "";
@@ -63,7 +73,7 @@ function drawGame() {
 }
 drawGame();
 
-// Function Event Listerner on click
+// Function who add an EventListener on an event
 function live(eventType, elementId, callback) {
   document.addEventListener(eventType, function (event) {
       if (event.target.id === elementId) {
@@ -81,11 +91,11 @@ for (var i = 0; i < td.length; i++) {
 		if (isToken != 'tokenWhite' || isToken != 'tokenBlack') { // Prevent click if the cell is a token
 			if (player == 'white') {
 				this.className = 'tokenWhite';
-				rules[rules.length] = new Token(explode[0], explode[1], 'white', rules.length);
+				rules[rules.length] = new White(explode[0], explode[1], rules.length);
 				player = 'black';
 			} else {
 				this.className = 'tokenBlack';
-				rules[rules.length] = new Token(explode[0], explode[1], 'black', rules.length);
+				rules[rules.length] = new Black(explode[0], explode[1], rules.length);
 				player = 'white';
 			}
 			neighbour();
@@ -98,6 +108,7 @@ function neighbour() {
 	for (k = 0; k < rules.length; k++) {
 		rules[k].ennemi = 0;
 		rules[k].friend = 0;
+		rules[k].friendTabPosition = [];
 		for (l = 0; l < rules.length; l++) {
 			if (k != l && rules[k].player != rules[l].player) { // ennemi :
 				if ((rules[k].i == rules[l].i && rules[k].j == rules[l].j + 1) || // right
@@ -112,6 +123,7 @@ function neighbour() {
 					(rules[k].i == rules[l].i + 1 && rules[k].j == rules[l].j) ||	// bottom
 					(rules[k].i == rules[l].i - 1 && rules[k].j == rules[l].j))	{	// top
 					rules[k].friend++;
+					rules[k].friendTabPosition.push(rules[l].tabPosition);
 				}
 			}
 		}
