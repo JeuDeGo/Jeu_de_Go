@@ -13,17 +13,21 @@ var White = function(i, j, tabPosition) {
 	this.i = parseInt(i);
 	this.j = parseInt(j);
 	this.tabPosition = parseInt(tabPosition);
+	this.player = 'white';
 	this.ennemi = 0;
 	this.friend = 0;
 	this.friendTabPosition = new Array();
+	this.surrounded = false;
 };
 var Black = function(i, j, tabPosition) {
 	this.i = parseInt(i);
 	this.j = parseInt(j);
 	this.tabPosition = parseInt(tabPosition);
+	this.player = 'black';
 	this.ennemi = 0;
 	this.friend = 0;
 	this.friendTabPosition = new Array();
+	this.surrounded = false;
 };
 
 // Function who create the table
@@ -127,6 +131,7 @@ function neighbour() {
 				}
 			}
 		}
+		if (rules[k].ennemi != 0 && (rules[k].ennemi + rules[k].friend == 4)) rules[k].surrounded = true;
 	}
 	removeToken();
 }
