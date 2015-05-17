@@ -1,52 +1,42 @@
-/**
-*Local Variables
-**/
-var table = new Array();
-var td = document.getElementsByTagName('td');
-var player = 'black';
 
 /**
-*constructor of Token object
+*Constructor
 **/
-
-var Rules = function() {
-	this.token = new Array();
-	this.group = new Array();
-};
-var White = function(i, j, tabPosition) {
-	this.i = parseInt(i);
-	this.j = parseInt(j);
-	this.tabPosition = parseInt(tabPosition);
-	this.player = 'white';
-	this.ennemi = 0;
-	this.friend = 0;
-	this.friendTabPosition = new Array();
-	this.surrounded = false;
-};
-var Black = function(i, j, tabPosition) {
-	this.i = parseInt(i);
-	this.j = parseInt(j);
-	this.tabPosition = parseInt(tabPosition);
-	this.player = 'black';
-	this.ennemi = 0;
-	this.friend = 0;
-	this.friendTabPosition = new Array();
-	this.surrounded = false;
-};
-
-// Function who create the table
-function createTab() {
-	for (i = 0; i < 19; i++) {
-		table[i] = [];
-		for (j = 0; j < 19; j++) {
-			table[i][j] = 0;
+var Game = {
+	player : 'black',
+	td : document.getElementsByTagName('td'),
+	token : new Array(),
+	group : new Array(),
+	table : new Array(),
+	CreateTab : function() {
+		for (i = 0; i < 19; i++) {
+			Game.table[i] = [];
+			for (j = 0; j < 19; j++) {
+				Game.table[i][j] = 0;
+			}
 		}
+	},
+	CreateToken : function(i, j, tabPosition) {
+		this.i = parseInt(i);
+		this.j = parseInt(j);
+		this.tabPosition = parseInt(tabPosition);
+		this.player = Game.player;
+		this.ennemi = 0;
+		this.friend = 0;
+		this.friendTabPosition = new Array();
+		this.surrounded = false;
+	},
+	CreateGroup : function(x, y) {
+		this.tokenTabPosition = [x, y]; 
+		this.player = Game.player;
+		this.surrounded = false;
 	}
-}
-createTab();
-var game = new Rules();
+};
 
-// Function who draw the game into the DOM
+// Creation of Game.table
+Game.CreateTab();
+
+// Function who draw the Game into the DOM
 function drawGame() {
 	var html = document.getElementById("board");
 	var draw = "";
@@ -92,63 +82,63 @@ function live(eventType, elementId, callback) {
 }
 
 // Loop who add click on each intersection
-for (var i = 0; i < td.length; i++) {
-	var currentElement = td[i];
+for (var i = 0; i < Game.td.length; i++) {
+	var currentElement = Game.td[i];
 	live('click', currentElement.id, function() {
 		var explode = this.id.split('_');
 		var isToken = this.className;
 		if (isToken != 'tokenWhite' && isToken != 'tokenBlack') { // Prevent click if the cell is a token
-			if (player == 'white') {
+			if (Game.player == 'white') {
 				this.className = 'tokenWhite';
-				game.token[game.token.length] = new White(explode[0], explode[1], game.token.length);
-				player = 'black';
+				Game.token[Game.token.length] = new Game.CreateToken(explode[0], explode[1], Game.token.length);
 			} else {
 				this.className = 'tokenBlack';
-				game.token[game.token.length] = new Black(explode[0], explode[1], game.token.length);
-				player = 'white';
+				Game.token[Game.token.length] = new Game.CreateToken(explode[0], explode[1], Game.token.length);
 			}
 			neighbour();
+			Game.player = ((Game.player == 'white') ? 'black' : 'white');
 		}
 	});
 }
 
 // Function who calcuate how many neighbour each token have, and wich kind (ennemi or friend)
 function neighbour() {
-	for (k = 0; k < game.token.length; k++) {
-		game.token[k].ennemi = 0;
-		game.token[k].friend = 0;
-		game.token[k].friendTabPosition = [];
-		for (l = 0; l < game.token.length; l++) {
-			if (k != l && game.token[k].player != game.token[l].player) { // ennemi :
-				if ((game.token[k].i == game.token[l].i && game.token[k].j == game.token[l].j + 1) || // right
-					(game.token[k].i == game.token[l].i && game.token[k].j == game.token[l].j - 1) || // left
-					(game.token[k].i == game.token[l].i + 1 && game.token[k].j == game.token[l].j) ||	// bottom
-					(game.token[k].i == game.token[l].i - 1 && game.token[k].j == game.token[l].j))	{	// top
-					game.token[k].ennemi++;
+	for (k = 0; k < Game.token.length; k++) {
+		Game.token[k].ennemi = 0;
+		Game.token[k].friend = 0;
+		Game.token[k].friendTabPosition = [];
+		for (l = 0; l < Game.token.length; l++) {
+			if (k != l && Game.token[k].player != Game.token[l].player) { // ennemi :
+				if ((Game.token[k].i == Game.token[l].i && Game.token[k].j == Game.token[l].j + 1) || // right
+					(Game.token[k].i == Game.token[l].i && Game.token[k].j == Game.token[l].j - 1) || // left
+					(Game.token[k].i == Game.token[l].i + 1 && Game.token[k].j == Game.token[l].j) ||	// bottom
+					(Game.token[k].i == Game.token[l].i - 1 && Game.token[k].j == Game.token[l].j))	{	// top
+					Game.token[k].ennemi++;
 				}
-			} else if (k != l && game.token[k].player == game.token[l].player) { // friend :
-				if ((game.token[k].i == game.token[l].i && game.token[k].j == game.token[l].j + 1) || // right
-					(game.token[k].i == game.token[l].i && game.token[k].j == game.token[l].j - 1) || // left
-					(game.token[k].i == game.token[l].i + 1 && game.token[k].j == game.token[l].j) ||	// bottom
-					(game.token[k].i == game.token[l].i - 1 && game.token[k].j == game.token[l].j))	{	// top
-					game.token[k].friend++;
-					game.token[k].friendTabPosition.push(game.token[l].tabPosition);
+			} else if (k != l && Game.token[k].player == Game.token[l].player) { // friend :
+				if ((Game.token[k].i == Game.token[l].i && Game.token[k].j == Game.token[l].j + 1) || // right
+					(Game.token[k].i == Game.token[l].i && Game.token[k].j == Game.token[l].j - 1) || // left
+					(Game.token[k].i == Game.token[l].i + 1 && Game.token[k].j == Game.token[l].j) ||	// bottom
+					(Game.token[k].i == Game.token[l].i - 1 && Game.token[k].j == Game.token[l].j))	{	// top
+					Game.token[k].friend++;
+					Game.token[k].friendTabPosition.push(Game.token[l].tabPosition);
+					Game.group[Game.group.length] = new Game.CreateGroup(Game.token[k].tabPosition, Game.token[l].tabPosition);
 				}
 			}
 		}
-		if (game.token[k].ennemi != 0 && (game.token[k].ennemi + game.token[k].friend == 4)) game.token[k].surrounded = true;
+		if (Game.token[k].ennemi != 0 && (Game.token[k].ennemi + Game.token[k].friend == 4)) Game.token[k].surrounded = true;
 	}
 	removeToken();
 }
 
 // Function who remove a token circled by 4 ennemis
 function removeToken() {
-	for (i = 0; i < game.token.length; i++) {
-		if ((game.token[i].friend == 0) && (game.token[i].ennemi == 4)) {
-			var removeIt = document.getElementById(game.token[i].i + '_' + game.token[i].j);
+	for (i = 0; i < Game.token.length; i++) {
+		if ((Game.token[i].friend == 0) && (Game.token[i].ennemi == 4)) {
+			var removeIt = document.getElementById(Game.token[i].i + '_' + Game.token[i].j);
 			removeIt.className = 'checkerboardCross'; // Change class name of current element
-			game.token.splice(game.token[i].tabPosition, 1); // Delete token in game.token tab
-			for (j = 0; j < game.token.length; j++) game.token[j].tabPosition = j; // actualise table position of all token
+			Game.token.splice(Game.token[i].tabPosition, 1); // Delete token in Game.token tab
+			for (j = 0; j < Game.token.length; j++) Game.token[j].tabPosition = j; // actualise table position of all token
 		}
 	}
 }
