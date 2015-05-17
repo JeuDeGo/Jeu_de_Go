@@ -4,7 +4,7 @@
 var table = new Array();
 var rules = new Array();
 var td = document.getElementsByTagName('td');
-var player = 'white';
+var player = 'black';
 
 /**
 *constructor of Token object
@@ -92,7 +92,7 @@ for (var i = 0; i < td.length; i++) {
 	live('click', currentElement.id, function() {
 		var explode = this.id.split('_');
 		var isToken = this.className;
-		if (isToken != 'tokenWhite' || isToken != 'tokenBlack') { // Prevent click if the cell is a token
+		if (isToken != 'tokenWhite' && isToken != 'tokenBlack') { // Prevent click if the cell is a token
 			if (player == 'white') {
 				this.className = 'tokenWhite';
 				rules[rules.length] = new White(explode[0], explode[1], rules.length);
