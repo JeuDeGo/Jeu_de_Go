@@ -6,7 +6,8 @@ var Game = {
 	data: {
 		player : 'black',
 		td : document.getElementsByTagName('td'),
-		table : new Array()
+		table : new Array(),
+		groupLength : 1
 	},
 	token : new Array(),
 	group : new Array(),
@@ -26,11 +27,8 @@ var Game = {
 			this.player = Game.data.player;
 			this.ennemi = 0;
 			this.friendTabPosition = new Array();
+			this.group = 0;
 		},
-		CreateGroup : function() {
-			this.token = new Array(); 
-			this.player = Game.data.player;
-		}
 	}
 };
 
@@ -106,7 +104,6 @@ for (var i = 0; i < Game.data.td.length; i++) {
 function neighbourhood() {
 	for (k = 0; k < Game.token.length; k++) {
 		Game.token[k].ennemi = 0;
-		Game.token[k].friend = 0;
 		Game.token[k].friendTabPosition = [];
 		for (l = 0; l < Game.token.length; l++) {
 			if (k != l && Game.token[k].player != Game.token[l].player) { // ennemi :
@@ -123,7 +120,16 @@ function neighbourhood() {
 					(Game.token[k].i == Game.token[l].i + 1 && Game.token[k].j == Game.token[l].j) ||	// bottom
 					(Game.token[k].i == Game.token[l].i - 1 && Game.token[k].j == Game.token[l].j))	{	// top
 					// Create new Group
-					Game.group[Game.group.length] = new Game.constructor.CreateGroup();
+					if (Game.token[k].group != 0 && Game.token[k].group == 0) { // Add token[k].group to token[l].group
+						Game.token[l].group == Game.token[k].group;
+					} else if (Game.token[k].group == 0 && Game.token[l].group != 0) {
+						Game.token[k].group == Game.token[l].group;
+					} else if (Game.token[k].group == 0 && Game.token[l].group == 0) {
+						Game.token[k].group = Game.data.groupLength;
+						Game.token[l].group = Game.token[k].group;
+						Game.data.groupLength++;
+					}
+					/* Game.token[k].group = new Game.constructor.CreateGroup();
 					// Replace data into this group
 					Game.group[(Game.group.length) - 1].token.push(Game.token[k]);
 					Game.group[(Game.group.length) - 1].token.push(Game.token[l]);
@@ -131,7 +137,8 @@ function neighbourhood() {
 					Game.token.splice(Game.token[l].tabPosition, 1);
 					Game.token.splice(Game.token[k].tabPosition, 1);
 					// actualise table position of all token
-					for (j = 0; j < Game.token.length; j++) Game.token[j].tabPosition = j;
+
+					for (j = 0; j < Game.token.length; j++) Game.token[j].tabPosition = j; */
 				}
 			}
 		}
