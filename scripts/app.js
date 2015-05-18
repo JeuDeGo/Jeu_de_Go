@@ -139,7 +139,9 @@ function neighbourhood() {
 						Game.data.table[Game.token[k].group].push(Game.token[k].tabPosition);
 					} else if (Game.token[k].group != 0 && Game.token[l].group == 0) {
 						Game.token[l].group = Game.token[k].group;
-					} /*else if (Game.token[k].group != 0 && Game.token[l] != 0) { // merge group together
+					} 
+
+					/*else if (Game.token[k].group != 0 && Game.token[l] != 0) { // NEED TO ADD GROUP MERGE !!!
 						Game.token[l].group = Game.token[k].group;
 					} */
 				}
@@ -153,7 +155,7 @@ function removeToken() {
 	for (i = 0; i < Game.token.length; i++) {
 		if (Game.token[i].group == 0 && Game.token[i].liberty == 0) { // Token without group
 			var removeIt = document.getElementById(Game.token[i].i + '_' + Game.token[i].j);
-			removeIt.className = 'checkerboardCross'; // NEED TO ADD CLASS IN FONCTION OF I AND J
+			removeIt.className = 'checkerboardCross'; // NEED TO ADD CLASS IN FONCTION OF I AND J !!!
 			Game.token.splice(Game.token[i].tabPosition, 1); // Delete token in Game.token tab
 			for (j = 0; j < Game.token.length; j++) Game.token[j].tabPosition = j; // actualise table position of all token
 		} else if ( Game.token[i].group != 0 && Game.token[i].liberty == 0) {
@@ -164,7 +166,7 @@ function removeToken() {
 			if (check == 0) {
 				for (j = 0; j < Game.data.table[Game.token[i].group].length; j++) {
 					var removeIt = document.getElementById(Game.token[Game.data.table[Game.token[i].group][j]].i + '_' + Game.token[Game.data.table[Game.token[i].group][j]].j);
-					removeIt.className = 'checkerboardCross'; // NEED TO ADD CLASS IN FONCTION OF I AND J
+					removeIt.className = 'checkerboardCross'; // NEED TO ADD CLASS IN FONCTION OF I AND J !!!
 				}
 				// NEED TO ADD REMOVING OF Game.token[k] !!!
 				// NEED TO ADD REMOVING OF Game.data.table[Game.token[k].group] !!!
