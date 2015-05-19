@@ -26,7 +26,9 @@ var Game = {
 		libertyNumber : function (i, j) {
 			if ((i == 1 && j == 1) || (i == 1 && j == 19) || (i == 19 && j == 1) || (i == 19 && j == 19)) {
 				return 2;
-			} else if ((i == 1 && j != 1) || (i == 1 && j != 19) || (i != 19 && j == 1) || (i != 19 && j == 19)) {
+			} else if ((i == 1 && j != 1) || (i == 1 && j != 19) || (i == 19 && j != 1) || (i == 19 && j != 19)) {
+				return 3;
+			} else if ((i == 1 && i != 1) || (i == 1 && i != 19) || (i == 19 && i != 1) || (i == 19 && i != 19)) {
 				return 3;
 			} else {
 				return 4;
