@@ -118,21 +118,19 @@ function neighbourhood() {
 		for (l = 0; l < Game.token.length; l++) {
 			var B = Game.token[l];
 
-			if (k != l && A.player != B.player) { // ennemi :
-				if ((A.i == B.i && A.j == B.j + 1) || // right
+			if ((k != l && A.player != B.player) && // ennemi :
+				  (A.i == B.i && A.j == B.j + 1) || // right
 					(A.i == B.i && A.j == B.j - 1) || // left
 					(A.i == B.i + 1 && A.j == B.j) ||	// bottom
 					(A.i == B.i - 1 && A.j == B.j))	{	// top
 					A.liberty--; // Remove liberty
-				}
-			} else if (k != l && A.player == B.player) { // manage group :
-				if ((A.i == B.i && A.j == B.j + 1) || // right
-					(A.i == B.i && A.j == B.j - 1) || // left
-					(A.i == B.i + 1 && A.j == B.j) ||	// bottom
-					(A.i == B.i - 1 && A.j == B.j))	{	// top
-					A.liberty--; // Remove liberty
-          group(k, l);
-				}
+				} else if ((k != l && A.player == B.player) &&  // manage group :
+				(A.i == B.i && A.j == B.j + 1) || // right
+				(A.i == B.i && A.j == B.j - 1) || // left
+				(A.i == B.i + 1 && A.j == B.j) ||	// bottom
+				(A.i == B.i - 1 && A.j == B.j))	{	// top
+				A.liberty--; // Remove liberty
+        group(k, l);
 			}
 		}
 	}
@@ -148,7 +146,7 @@ function group(k, l) {
     Game.data.groupLength++;
     Game.data.table[A.group] = new Array();
     Game.data.table[A.group].push(A.tabPosition);
-  } else if (A.group != 0 && B.group != 0) { // merge group A with group B
+  } else if (A.group != 0 && B.group != 0 && A.group != B.group) { // merge group A with group B
     mergeGroup(A.group, B.group);
   } else if (A.group == 0 && B.group != 0) { // add group to A.group
     A.group = B.group;
@@ -168,11 +166,9 @@ function mergeGroup(A, B) {
     // Game.data.table.splice(B, 1);
     Game.data.table[B] = 0;
   } else {
-    if (B < A) {
-      for (m = 0; m < Game.data.table[A].length; m++) {
-        Game.data.table[B].push(Game.data.table[A][m]);
-        //Game.token[Game.data.table[B][m]].group = A;
-      }
+    for (m = 0; m < Game.data.table[A].length; m++) {
+      Game.data.table[B].push(Game.data.table[A][m]);
+      //Game.token[Game.data.table[B][m]].group = A;
     }
   }
 }
