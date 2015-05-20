@@ -109,7 +109,7 @@ function neighbourhood() {
 	for (j = 0; j < Game.token.length; j++) Game.token[j].group = 0; // reset group
 	Game.data.groupLength = 1;
 	Game.data.table = [];
-  
+
 	for (k = 0; k < Game.token.length; k++) {
 		var A = Game.token[k];
 
@@ -149,27 +149,31 @@ function group(k, l) {
     Game.data.table[A.group] = new Array();
     Game.data.table[A.group].push(A.tabPosition);
   } else if (A.group != 0 && B.group != 0) { // merge group A with group B
-    if (A.group < B.group) {
-      for (m = 0; m < Game.data.table[B.group].length; m++) {
-        Game.data.table[A.group].push(Game.data.table[B.group][m]);
-        //Game.token[Game.data.table[B.group][m]].group = A.group;
-        for (j = Game.data.table[B.group]; j < Game.data.table.length; j++) Game.data.table[j].tabPosition = j;
-      }
-      // Game.data.table.splice(B.group, 1);
-      Game.data.table[B.group] = 0;
-    } else {
-      if (B.group < A.group) {
-        for (m = 0; m < Game.data.table[A.group].length; m++) {
-          Game.data.table[B.group].push(Game.data.table[A.group][m]);
-          //Game.token[Game.data.table[B.group][m]].group = A.group;
-        }
-      }
-    }
+    mergeGroup(A.group, B.group);
   } else if (A.group == 0 && B.group != 0) { // add group to A.group
     A.group = B.group;
     Game.data.table[A.group].push(A.tabPosition);
   } else if (A.group != 0 && B.group == 0) { // add group to B.group
     B.group = A.group;
+  }
+}
+
+function mergeGroup(A, B) {
+  if (A < B) {
+    for (m = 0; m < Game.data.table[B].length; m++) {
+      Game.data.table[A].push(Game.data.table[B][m]);
+      //Game.token[Game.data.table[B][m]].group = A;
+      for (j = Game.data.table[B]; j < Game.data.table.length; j++) Game.data.table[j].tabPosition = j;
+    }
+    // Game.data.table.splice(B, 1);
+    Game.data.table[B] = 0;
+  } else {
+    if (B < A) {
+      for (m = 0; m < Game.data.table[A].length; m++) {
+        Game.data.table[B].push(Game.data.table[A][m]);
+        //Game.token[Game.data.table[B][m]].group = A;
+      }
+    }
   }
 }
 
