@@ -118,20 +118,18 @@ function neighbourhood() {
 		for (l = 0; l < Game.token.length; l++) {
 			var B = Game.token[l];
 
-			if ((k != l && A.player != B.player) && // ennemi :
-        (A.i == B.i && A.j == B.j + 1) || // right
+			if ((k != l && A.player !== B.player) && 
+        ((A.i == B.i && A.j == B.j + 1) || // right
 				(A.i == B.i && A.j == B.j - 1) || // left
 				(A.i == B.i + 1 && A.j == B.j) ||	// bottom
-				(A.i == B.i - 1 && A.j == B.j))	{	// top
-				  A.liberty--;
-          console.log(A.tabPosition + ' ennemi de ' + B.tabPosition); // Remove liberty
+				(A.i == B.i - 1 && A.j == B.j)))	{	// top
+				  A.liberty--; // Remove liberty
 				} else if ((k != l && A.player == B.player) &&  // manage group :
-				(A.i == B.i && A.j == B.j + 1) || // right
+				((A.i == B.i && A.j == B.j + 1) || // right
 				(A.i == B.i && A.j == B.j - 1) || // left
 				(A.i == B.i + 1 && A.j == B.j) ||	// bottom
-				(A.i == B.i - 1 && A.j == B.j))	{	// top
+				(A.i == B.i - 1 && A.j == B.j)))	{	// top
   				A.liberty--; // Remove liberty
-          console.log(A.tabPosition + ' ami de ' + B.tabPosition);
           group(A, B);
           A.friendTabPosition.push(B.tabPosition);
           B.friendTabPosition.push(A.tabPosition);
