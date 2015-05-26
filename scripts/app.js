@@ -2,7 +2,8 @@ var Game = {
 	data: {
 		player : 'black',
 		td : document.getElementsByTagName('td'),
-		group : new Array()
+		group : new Array(),
+    groupPosition : new Array()
 	},
 	token : new Array(),
 	constructor : {
@@ -17,7 +18,7 @@ var Game = {
 			this.group = undefined;
       this.neighbour = 0;
       this.friendTabPosition = new Array();
-		},
+		}
 	},
 	otherFunction : {
 		libertyNumber : function (i, j) {
@@ -35,7 +36,7 @@ var Game = {
 				return 4;
 			}
 		}
-	}
+	},
 };
 
 // Function who draw the Game into the DOM
@@ -74,72 +75,41 @@ function drawGame() {
 }
 drawGame();
 
-// Function who add an EventListener on an event
-function live(eventType, elementId, callback) {
-  document.addEventListener(eventType, function (event) {
-      if (event.target.id === elementId) {
-        callback.call(event.target);
-      }
-  });
-}
-
-// Loop who add click on each intersection
-for (var i = 0; i < Game.data.td.length; i++) {
-	var currentElement = Game.data.td[i];
-	live('click', currentElement.id, function() {
-		var explode = this.id.split('_');
-		var isToken = this.className;
-		if (isToken != 'tokenWhite' && isToken != 'tokenBlack') { // Prevent click if the cell is a token
-			if (Game.data.player == 'white') {
-				this.className = 'tokenWhite';
-				Game.token.push(new Game.constructor.CreateToken(explode[0], explode[1], Game.token.length));
-			} else {
-				this.className = 'tokenBlack';
-				Game.token.push(new Game.constructor.CreateToken(explode[0], explode[1], Game.token.length));
-			}
-      Game.data.player = ((Game.data.player == 'white') ? 'black' : 'white');
-			neighbourhood();
-			removeToken();
-		}
-	});
-}
-
 // Function who calcuate how many neighbour each token have, and wich kind (ennemi or friend)
 function neighbourhood() {
-	for (j = 0; j < Game.token.length; j++) Game.token[j].group = undefined; // reset group
-	Game.data.group = [];
+  for (j = 0; j < Game.token.length; j++) Game.token[j].group = undefined; // reset group
+  Game.data.group = [];
 
-	for (k = 0; k < Game.token.length; k++) {
-		var A = Game.token[k];
+  for (k = 0; k < Game.token.length; k++) {
+    var A = Game.token[k];
 
-		A.liberty = A.initialLiberty;
+    A.liberty = A.initialLiberty;
     A.friendTabPosition = [];
 
-		for (l = 0; l < Game.token.length; l++) {
-			var B = Game.token[l];
+    for (l = 0; l < Game.token.length; l++) {
+      var B = Game.token[l];
 
-			if ((k != l && A.player !== B.player) && 
+      if ((k != l && A.player !== B.player) && 
       ((A.i == B.i && A.j == B.j + 1) || // right
-			(A.i == B.i && A.j == B.j - 1) || // left
-			(A.i == B.i + 1 && A.j == B.j) ||	// bottom
-			(A.i == B.i - 1 && A.j == B.j)))	{	// top
-			  A.liberty--; // Remove liberty
-			} else if ((k != l && A.player == B.player) &&  // manage group :
-			((A.i == B.i && A.j == B.j + 1) || // right
-			(A.i == B.i && A.j == B.j - 1) || // left
-			(A.i == B.i + 1 && A.j == B.j) ||	// bottom
-			(A.i == B.i - 1 && A.j == B.j)))	{	// top
-				A.liberty--; // Remove liberty
+      (A.i == B.i && A.j == B.j - 1) || // left
+      (A.i == B.i + 1 && A.j == B.j) || // bottom
+      (A.i == B.i - 1 && A.j == B.j)))  { // top
+        A.liberty--; // Remove liberty
+      } else if ((k != l && A.player == B.player) &&  // manage group :
+      ((A.i == B.i && A.j == B.j + 1) || // right
+      (A.i == B.i && A.j == B.j - 1) || // left
+      (A.i == B.i + 1 && A.j == B.j) || // bottom
+      (A.i == B.i - 1 && A.j == B.j)))  { // top
+        A.liberty--; // Remove liberty
         group(A, B);
         A.friendTabPosition.push(B.tabPosition);
         B.friendTabPosition.push(A.tabPosition);
-			}
-		}
-	}
+      }
+    }
+  }
 }
 
 function group(A, B) {
-
   if (A.group == undefined && B.group == undefined) {
   console.log('group'), // create new group
     A.group = Game.data.group.length;
@@ -177,28 +147,68 @@ function mergeGroup(A, B) {
 
 // Function who remove a token circled by 4 ennemis
 function removeToken() {
-	for (i = 0; i < Game.token.length; i++) {
-		if (Game.token[i].group == undefined && Game.token[i].liberty == 0) { // Token without group
-			var removeIt = document.getElementById(Game.token[i].i + '_' + Game.token[i].j);
-			removeIt.className = 'checkerboardCross'; // NEED TO ADD CLASS IN FONCTION OF I AND J
-			Game.token.splice(Game.token[i].tabPosition, 1); // Delete token in Game.token tab
+  for (i = 0; i < Game.token.length; i++) {
+    if (Game.token[i].group == undefined && Game.token[i].liberty == 0) { // Token without group
+      var removeIt = document.getElementById(Game.token[i].i + '_' + Game.token[i].j);
+      removeIt.className = 'checkerboardCross'; // NEED TO ADD CLASS IN FONCTION OF I AND J
+      Game.token.splice(Game.token[i].tabPosition, 1); // Delete token in Game.token tab
 
-			for (j = 0; j < Game.token.length; j++) Game.token[j].tabPosition = j; // actualise group position of all token
-		} else if ( Game.token[i].group != undefined && Game.token[i].liberty == 0) {
-			var check = Game.data.group[Game.token[i].group].length;
+      for (j = 0; j < Game.token.length; j++) Game.token[j].tabPosition = j; // actualise group position of all token
+    } else if ( Game.token[i].group != undefined && Game.token[i].liberty == 0) {
+      var check = Game.data.group[Game.token[i].group].length;
 
-			for (j = 0; j < Game.data.group[Game.token[i].group].length; j++) {
-				if (Game.token[Game.data.group[Game.token[i].group][j]].liberty == 0) check--;
-			}
+      for (j = 0; j < Game.data.group[Game.token[i].group].length; j++) {
+        if (Game.token[Game.data.group[Game.token[i].group][j]].liberty == 0) check--;
+      }
 
-			if (check == 0) {
-				for (j = 0; j < Game.data.group[Game.token[i].group].length; j++) {
-					var removeIt = document.getElementById(Game.token[Game.data.group[Game.token[i].group][j]].i + '_' + Game.token[Game.data.group[Game.token[i].group][j]].j);
-					removeIt.className = 'checkerboardCross'; // NEED TO ADD CLASS IN FONCTION OF I AND J
-				}
-				// NEED TO ADD REMOVING OF Game.token[k] !!!
-				// NEED TO ADD REMOVING OF Game.data.group[Game.token[k].group] !!!
-			}
-		}
-	}
+      if (check == 0) {
+        for (j = 0; j < Game.data.group[Game.token[i].group].length; j++) {
+          var removeIt = document.getElementById(Game.token[Game.data.group[Game.token[i].group][j]].i + '_' + Game.token[Game.data.group[Game.token[i].group][j]].j);
+          removeIt.className = 'checkerboardCross'; // NEED TO ADD CLASS IN FONCTION OF I AND J
+        }
+        // NEED TO ADD REMOVING OF Game.token[k] !!!
+        // NEED TO ADD REMOVING OF Game.data.group[Game.token[k].group] !!!
+      }
+    }
+  }
 }
+
+// Function who add an EventListener on an event
+function live(eventType, elementId, callback) {
+  document.addEventListener(eventType, function (event) {
+      if (event.target.id === elementId) {
+        callback.call(event.target);
+      }
+  });
+}
+
+// Loop who add click on each intersection
+for (var i = 0; i < Game.data.td.length; i++) {
+	var currentElement = Game.data.td[i];
+	live('click', currentElement.id, function() {
+		var explode = this.id.split('_');
+		var isToken = this.className;
+		if (isToken != 'tokenWhite' && isToken != 'tokenBlack') { // Prevent click if the cell is a token
+			if (Game.data.player == 'white') {
+				this.className = 'tokenWhite';
+				Game.token.push(new Game.constructor.CreateToken(explode[0], explode[1], Game.token.length));
+			} else {
+				this.className = 'tokenBlack';
+				Game.token.push(new Game.constructor.CreateToken(explode[0], explode[1], Game.token.length));
+			}
+      Game.data.player = ((Game.data.player == 'white') ? 'black' : 'white');
+			neighbourhood();
+			removeToken();
+		}
+	});
+}
+
+// create a bidimensional array in Game.data.groupPosition
+for (i = 0; i < 19; i++) {
+  Game.data.groupPosition[i] = [];
+  for (j = 0; j < 19; j++) {
+    Game.data.groupPosition[i][j] = undefined;
+  }
+}
+
+console.log(Game);
