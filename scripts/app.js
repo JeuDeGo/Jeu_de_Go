@@ -2,7 +2,7 @@ var Game = {
 	data: {
 		player : 'black',
 		td : document.getElementsByTagName('td'),
-		table : new Array()
+		group : new Array()
 	},
 	token : new Array(),
 	constructor : {
@@ -107,7 +107,7 @@ for (var i = 0; i < Game.data.td.length; i++) {
 // Function who calcuate how many neighbour each token have, and wich kind (ennemi or friend)
 function neighbourhood() {
 	for (j = 0; j < Game.token.length; j++) Game.token[j].group = undefined; // reset group
-	Game.data.table = [];
+	Game.data.group = [];
 
 	for (k = 0; k < Game.token.length; k++) {
 		var A = Game.token[k];
@@ -142,17 +142,17 @@ function group(A, B) {
 
   if (A.group == undefined && B.group == undefined) {
   console.log('group'), // create new group
-    A.group = Game.data.table.length;
+    A.group = Game.data.group.length;
     B.group = A.group;
-    Game.data.table[A.group] = new Array();
-    Game.data.table[A.group].push(A.tabPosition);
+    Game.data.group[A.group] = new Array();
+    Game.data.group[A.group].push(A.tabPosition);
   } else if (A.group != undefined && B.group != undefined && A.group != B.group) { // merge group A with group B
     mergeGroup(A.group, B.group);
   } else if (A.group != undefined && B.group != undefined && A.group == B.group) {
-    Game.data.table[A.group].push(A.tabPosition);
+    Game.data.group[A.group].push(A.tabPosition);
   } else if (A.group == undefined && B.group != undefined) { // add group to A.group
     A.group = B.group;
-    Game.data.table[A.group].push(A.tabPosition);
+    Game.data.group[A.group].push(A.tabPosition);
   } else if (A.group != undefined && B.group == undefined) { // add group to B.group
     B.group = A.group;
   }
@@ -160,17 +160,17 @@ function group(A, B) {
 
 function mergeGroup(A, B) {
   if (A < B) {
-    for (m = 0; m < Game.data.table[B].length; m++) {
-      Game.data.table[A].push(Game.data.table[B][m]);
-      //Game.token[Game.data.table[B][m]].group = A;
-      for (j = Game.data.table[B]; j < Game.data.table.length; j++) Game.data.table[j].tabPosition = j;
+    for (m = 0; m < Game.data.group[B].length; m++) {
+      Game.data.group[A].push(Game.data.group[B][m]);
+      //Game.token[Game.data.group[B][m]].group = A;
+      for (j = Game.data.group[B]; j < Game.data.group.length; j++) Game.data.group[j].tabPosition = j;
     }
-    // Game.data.table.splice(B, 1);
-    Game.data.table[B] = 0;
+    // Game.data.group.splice(B, 1);
+    Game.data.group[B] = 0;
   } else {
-    for (m = 0; m < Game.data.table[A].length; m++) {
-      Game.data.table[B].push(Game.data.table[A][m]);
-      //Game.token[Game.data.table[B][m]].group = A;
+    for (m = 0; m < Game.data.group[A].length; m++) {
+      Game.data.group[B].push(Game.data.group[A][m]);
+      //Game.token[Game.data.group[B][m]].group = A;
     }
   }
 }
@@ -183,21 +183,21 @@ function removeToken() {
 			removeIt.className = 'checkerboardCross'; // NEED TO ADD CLASS IN FONCTION OF I AND J
 			Game.token.splice(Game.token[i].tabPosition, 1); // Delete token in Game.token tab
 
-			for (j = 0; j < Game.token.length; j++) Game.token[j].tabPosition = j; // actualise table position of all token
+			for (j = 0; j < Game.token.length; j++) Game.token[j].tabPosition = j; // actualise group position of all token
 		} else if ( Game.token[i].group != undefined && Game.token[i].liberty == 0) {
-			var check = Game.data.table[Game.token[i].group].length;
+			var check = Game.data.group[Game.token[i].group].length;
 
-			for (j = 0; j < Game.data.table[Game.token[i].group].length; j++) {
-				if (Game.token[Game.data.table[Game.token[i].group][j]].liberty == 0) check--;
+			for (j = 0; j < Game.data.group[Game.token[i].group].length; j++) {
+				if (Game.token[Game.data.group[Game.token[i].group][j]].liberty == 0) check--;
 			}
 
 			if (check == 0) {
-				for (j = 0; j < Game.data.table[Game.token[i].group].length; j++) {
-					var removeIt = document.getElementById(Game.token[Game.data.table[Game.token[i].group][j]].i + '_' + Game.token[Game.data.table[Game.token[i].group][j]].j);
+				for (j = 0; j < Game.data.group[Game.token[i].group].length; j++) {
+					var removeIt = document.getElementById(Game.token[Game.data.group[Game.token[i].group][j]].i + '_' + Game.token[Game.data.group[Game.token[i].group][j]].j);
 					removeIt.className = 'checkerboardCross'; // NEED TO ADD CLASS IN FONCTION OF I AND J
 				}
 				// NEED TO ADD REMOVING OF Game.token[k] !!!
-				// NEED TO ADD REMOVING OF Game.data.table[Game.token[k].group] !!!
+				// NEED TO ADD REMOVING OF Game.data.group[Game.token[k].group] !!!
 			}
 		}
 	}
