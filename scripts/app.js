@@ -119,20 +119,20 @@ function neighbourhood() {
 			var B = Game.token[l];
 
 			if ((k != l && A.player !== B.player) && 
-        ((A.i == B.i && A.j == B.j + 1) || // right
-				(A.i == B.i && A.j == B.j - 1) || // left
-				(A.i == B.i + 1 && A.j == B.j) ||	// bottom
-				(A.i == B.i - 1 && A.j == B.j)))	{	// top
-				  A.liberty--; // Remove liberty
-				} else if ((k != l && A.player == B.player) &&  // manage group :
-				((A.i == B.i && A.j == B.j + 1) || // right
-				(A.i == B.i && A.j == B.j - 1) || // left
-				(A.i == B.i + 1 && A.j == B.j) ||	// bottom
-				(A.i == B.i - 1 && A.j == B.j)))	{	// top
-  				A.liberty--; // Remove liberty
-          group(A, B);
-          A.friendTabPosition.push(B.tabPosition);
-          B.friendTabPosition.push(A.tabPosition);
+      ((A.i == B.i && A.j == B.j + 1) || // right
+			(A.i == B.i && A.j == B.j - 1) || // left
+			(A.i == B.i + 1 && A.j == B.j) ||	// bottom
+			(A.i == B.i - 1 && A.j == B.j)))	{	// top
+			  A.liberty--; // Remove liberty
+			} else if ((k != l && A.player == B.player) &&  // manage group :
+			((A.i == B.i && A.j == B.j + 1) || // right
+			(A.i == B.i && A.j == B.j - 1) || // left
+			(A.i == B.i + 1 && A.j == B.j) ||	// bottom
+			(A.i == B.i - 1 && A.j == B.j)))	{	// top
+				A.liberty--; // Remove liberty
+        group(A, B);
+        A.friendTabPosition.push(B.tabPosition);
+        B.friendTabPosition.push(A.tabPosition);
 			}
 		}
 	}
