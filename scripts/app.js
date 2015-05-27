@@ -33,7 +33,7 @@ var Game = {
 				return 4;
 			}
 		}
-	},
+	}
 };
 
 // Function who draw the Game into the DOM
