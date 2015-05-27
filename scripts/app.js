@@ -2,8 +2,6 @@ var Game = {
 	data: {
 		player : 'black',
 		td : document.getElementsByTagName('td'),
-		group : new Array(),
-    groupPosition : new Array()
 	},
 	token : new Array(),
 	constructor : {
@@ -13,11 +11,10 @@ var Game = {
 			this.player = Game.data.player;
 			this.initialLiberty = Game.otherFunction.libertyNumber(i, j);
 			this.liberty = this.initialLiberty;
-			this.friendTabPosition;
+			this.friendTabPosition = new Array();
 			this.group = undefined;
       this.neighbour = 0;
       this.tabPosition = i + '_' + j;
-      this.friendTabPosition = new Array();
 		}
 	},
 	otherFunction : {
@@ -77,15 +74,56 @@ drawGame();
 
 // Function who calculate who is the neighbour of the target token
 function neighbourhood(i, j, tokenColor) {
-  if (i != 0 && Game.token[(i - 1)][j] != undefined) { // neighboor on top
-    console.log('neighboor on top');
+
+  if (i != 0 && Game.token[parseInt(i) - 1][j] != undefined) { // neighboor on top
+    if (tokenColor == Game.token[parseInt(i) - 1][j].player) friend(Game.token[i][j], Game.token[parseInt(i) - 1][j]);
+    else ennemi(Game.token[i][j], Game.token[parseInt(i) - 1][j]);
   }
-  console.log(i + 1 + '_' + j);
-  if (i != 19 && Game.token[(i + 1)][j] != undefined) { // neighboor on bottom
-    console.log('neighboor on bottom');
+  if (i != 0 && Game.token[parseInt(i) + 1][j] != undefined) { // neighboor on bottom
+    if (tokenColor == Game.token[parseInt(i) + 1][j].player) friend(Game.token[i][j], Game.token[parseInt(i) + 1][j]);
+    else ennemi(Game.token[i][j], Game.token[parseInt(i) + 1][j]);
+  }
+  if (j != 0 && Game.token[i][parseInt(j) - 1] != undefined) { // neighboor on left
+    if (tokenColor == Game.token[i][parseInt(j) - 1].player) friend(Game.token[i][j], Game.token[i][parseInt(j) - 1]);
+    else ennemi(Game.token[i][j], Game.token[i][parseInt(j) - 1]);
+  }
+  if (j != 0 && Game.token[i][parseInt(j) + 1] != undefined) { // neighboor on right
+    if (tokenColor == Game.token[i][parseInt(j) + 1].player) friend(Game.token[i][j], Game.token[i][parseInt(j) + 1]);
+    else ennemi(Game.token[i][j], Game.token[i][parseInt(j) + 1]);
   }
 }
 
+// Functon who remove liberty or token / group of tokens
+function ennemi(tokenA, tokenB) {
+  tokenA.liberty--;
+  tokenB.liberty--;
+  if (tokenA.liberty == 0 && tokenA.group == undefined) removeSoloToken(tokenA);
+  if (tokenB.liberty == 0 && tokenB.group == undefined) removeSoloToken(tokenB);
+  if (tokenA.liberty == 0 && tokenA.group == true) removeGroupToken(tokenA);
+  if (tokenB.liberty == 0 && tokenB.group == true) removeGroupToken(tokenB);
+}
+
+// Function who remove liberty and create group
+function friend(tokenA, tokenB) {
+  tokenA.liberty--;
+  tokenB.liberty--;
+  tokenA.group = true;
+  tokenB.group = true;
+  tokenA.friendTabPosition.push(tokenB.tabPosition);
+  tokenB.friendTabPosition.push(tokenA.tabPosition);
+}
+
+// Function who remove a token
+function removeSoloToken(token) {
+  var currentElement = document.getElementById(token.i + '_' + token.j);
+  currentElement.className = 'checkerboardCross';
+  Game.token[token.i][token.j] = undefined;
+}
+
+// Function who remove a group of tokens
+function removeGroupToken(token) {
+  console.log('remove group');
+}
 
 // Function who add an EventListener on an event
 function live(eventType, elementId, callback) {
@@ -117,14 +155,7 @@ for (var i = 0; i < Game.data.td.length; i++) {
 	});
 }
 
-// create a bidimensional array in Game.data.groupPosition
-for (i = 0; i < 19; i++) {
-  Game.data.groupPosition[i] = [];
-  for (j = 0; j < 19; j++) {
-    Game.data.groupPosition[i][j] = undefined;
-  }
-}
-
+// Create a bidemensional array in Game.token
 for (i = 0; i < 19; i++) {
   Game.token[i] = [];
   for (j = 0; j < 19; j++) {
