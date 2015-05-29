@@ -102,8 +102,22 @@ function ennemi(tokenA, tokenB) {
   if (tokenA.liberty == 0 && tokenA.group == undefined) removeSoloToken(tokenA); // NEED TO PREVENT THIS CASE
   if (tokenB.liberty == 0 && tokenB.group == undefined) removeSoloToken(tokenB);
   if (tokenB.liberty == 0 && tokenB.group == true)  {
+    Game.data.tabPositionOfGroupToRemove = new Array();
+    Game.data.tabPositionOfEnnemi = new Array();
     checkLibertyGroup(tokenB);
   }
+}
+
+// Function who remove a token
+function removeSoloToken(token) {
+  var currentElement = document.getElementById(token.i + '_' + token.j);
+
+  currentElement.className = 'checkerboardCross';
+  Game.token[token.i][token.j] = undefined;
+  if (token.i != 18) Game.token[parseInt(token.i) + 1][token.j].liberty++;
+  if (token.i != 0) Game.token[parseInt(token.i) - 1][token.j].liberty++;
+  if (token.j != 18) Game.token[token.i][parseInt(token.j) + 1].liberty++;
+  if (token.j != 0) Game.token[token.i][parseInt(token.j) - 1].liberty++;
 }
 
 // Function who calculate if the group doesn't have any liberty left
@@ -134,6 +148,7 @@ function checkLibertyGroup(token, precedentToken) {
   }
 }
 
+// Function who push into an array wich ennemi(s) surround a tested token
 function tokenWhoSurround(token, i, j) {
   var tabOfToken = Game.data.tabPositionOfEnnemi;
   var target = Game.token;
@@ -142,26 +157,6 @@ function tokenWhoSurround(token, i, j) {
   if (i != 0 && target[parseInt(i) - 1][j].player != token.player) tabOfToken.push(target[parseInt(i) - 1][j].tabPosition);
   if (j != 18 && target[i][parseInt(j) + 1].player != token.player) tabOfToken.push(target[i][parseInt(j) + 1].tabPosition);
   if (j != 0 && target[i][parseInt(j) - 1].player != token.player) tabOfToken.push(target[i][parseInt(j) - 1].tabPosition);
-}
-
-function addLibertytoEnnemi() {
-  for (i = 0; i < Game.data.tabPositionOfEnnemi.length; i++) {
-    var currentElement = Game.data.tabPositionOfEnnemi[i].split('_');
-
-    Game.token[currentElement[0]][currentElement[1]].liberty++;
-  }
-}
-
-// Function who remove a token
-function removeSoloToken(token) {
-  var currentElement = document.getElementById(token.i + '_' + token.j);
-
-  currentElement.className = 'checkerboardCross';
-  Game.token[token.i][token.j] = undefined;
-  if (token.i != 18) Game.token[parseInt(token.i) + 1][token.j].liberty++;
-  if (token.i != 0) Game.token[parseInt(token.i) - 1][token.j].liberty++;
-  if (token.j != 18) Game.token[token.i][parseInt(token.j) + 1].liberty++;
-  if (token.j != 0) Game.token[token.i][parseInt(token.j) - 1].liberty++;
 }
 
 // Function who remove a group of tokens
@@ -173,6 +168,15 @@ function removeGroup() {
     Game.token[currentElement[0]][currentElement[1]] = undefined;
   }
   addLibertytoEnnemi();
+}
+
+// Function who add liberty to token who surround a deleted group
+function addLibertytoEnnemi() {
+  for (i = 0; i < Game.data.tabPositionOfEnnemi.length; i++) {
+    var currentElement = Game.data.tabPositionOfEnnemi[i].split('_');
+
+    Game.token[currentElement[0]][currentElement[1]].liberty++;
+  }
 }
 
 // Function who add an EventListener on an event
@@ -188,8 +192,6 @@ function live(eventType, elementId, callback) {
 for (var i = 0; i < Game.data.td.length; i++) {
 	var currentElement = Game.data.td[i];
 	live('click', currentElement.id, function() {
-    Game.data.tabPositionOfGroupToRemove = new Array();
-    Game.data.tabPositionOfEnnemi = new Array();
     for (i = 0; i < 18; i++) { // NEED TO ADD RESET ONLY ON CONCERNED TOKENS
       for (j = 0; j < 18; j++) {
         if (Game.token[i][j] != undefined) Game.token[i][j].checked = undefined;
