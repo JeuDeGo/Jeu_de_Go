@@ -2,8 +2,6 @@ var Game = {
 	data: {
 		player : 'black',
 		td : document.getElementsByTagName('td'),
-    numberOfTokenInGroup : 0,
-    numberOfTokenInGroupWithoutLiberty : 0
 	},
 	token : new Array(),
 	constructor : {
@@ -15,9 +13,8 @@ var Game = {
 			this.liberty = this.initialLiberty;
 			this.friendTabPosition = new Array();
 			this.group = undefined;
-      this.neighbour = 0;
-      this.alreadyAddToNumberOfToken = false;
       this.checked = undefined;
+      this.precedentToken = undefined;
       this.tabPosition = i + '_' + j;
 		}
 	},
@@ -129,31 +126,30 @@ function ennemi(tokenA, tokenB) {
   if (tokenA.liberty == 0 && tokenA.group == undefined) removeSoloToken(tokenA); // NEED TO PREVENT THIS CASE
   if (tokenB.liberty == 0 && tokenB.group == undefined) removeSoloToken(tokenB);
   if (tokenB.liberty == 0 && tokenB.group == true)  {
-    checkGroup(tokenB, Game.data.numberOfTokenInGroup);
-    console.log(Game.data.numberOfTokenInGroup);
-    console.log(Game.data.numberOfTokenInGroupWithoutLiberty);
-    if (Game.data.numberOfTokenInGroup == Game.data.numberOfTokenInGroupWithoutLiberty) console.log('remove group');
+    checkLibertyGroup(tokenB);
   }
 }
 
-// Function who compt how many token is in the current group
-function checkGroup(token, number) {
-  if (token.alreadyAddToNumberOfToken == false) {
-    Game.data.numberOfTokenInGroup++
-    token.alreadyAddToNumberOfToken = true;
-    if (token.liberty == 0) Game.data.numberOfTokenInGroupWithoutLiberty++
+// Function who calculate if the group doesn't have any liberty left
+function checkLibertyGroup(token, precedentToken) {
+  if (token.liberty != 0) {
+    return 0;
   }
+  token.checked = true;
+  if (token.precedentToken == undefined) token.precedentToken = precedentToken;
   for (i = 0; i < token.friendTabPosition.length; i++) {
-    if ((token.friendTabPosition.length - 1) == i) token.checked = true; // Need to resolve loop problem (carré de token)
     var explode = token.friendTabPosition[i].split('_');
-    if (Game.token[explode[0]][explode[1]].checked != true) {
-      checkGroup(Game.token[explode[0]][explode[1]], Game.data.numberOfTokenInGroup);
-    }
+    if (Game.token[explode[0]][explode[1]].checked != true) return checkLibertyGroup(Game.token[explode[0]][explode[1]], token.tabPosition);
   }
+  if (token.precedentToken != undefined) {
+    explode = token.precedentToken.split('_');
+    checkLibertyGroup(Game.token[explode[0]][explode[1]])
+  } else return removeGroup();
 }
+
 
 function removeGroup(token) { //recursive
-
+  console.log('remove group');
 }
 
 
@@ -182,7 +178,7 @@ for (var i = 0; i < Game.data.td.length; i++) {
     for (i = 0; i < 18; i++) { // reset
       for (j = 0; j < 18; j++) {
         if (Game.token[i][j] != undefined) Game.token[i][j].checked = undefined;
-        if (Game.token[i][j] != undefined) Game.token[i][j].alreadyAddToNumberOfToken = false;
+        if (Game.token[i][j] != undefined) Game.token[i][j].precedentToken = undefined;
       }
     }
 		var explode = this.id.split('_');
