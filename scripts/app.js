@@ -2,6 +2,7 @@ var Game = {
 	data: {
 		player : 'black',
 		td : document.getElementsByTagName('td'),
+    TabPositionOfGroupToRemove : new Array()
 	},
 	token : new Array(),
 	constructor : {
@@ -99,24 +100,8 @@ function friend(tokenA, tokenB) {
   tokenB.liberty--;
   tokenA.friendTabPosition.push(tokenB.tabPosition);
   tokenB.friendTabPosition.push(tokenA.tabPosition);
-  if (tokenB.group == undefined && tokenA.group == undefined) setGroupUndefined(tokenA, tokenB);
-  else setGroupDefined(tokenA, tokenB);
-}
-
-// Function who create a group if the tokens aren't grouped
-function setGroupUndefined(tokenA, tokenB) {
-  tokenA.group = true;
   tokenB.group = true;
-}
-
-// Function who add a token to a group
-function setGroupDefined(tokenA, tokenB) {
   tokenA.group = true;
-}
-
-// Function who merge Group
-function mergeGroup() {
-
 }
 
 // Function who remove liberty or token / group of tokens
@@ -135,7 +120,10 @@ function checkLibertyGroup(token, precedentToken) {
   if (token.liberty != 0) {
     return 0;
   }
-  token.checked = true;
+  if (token.checked != true) {
+    token.checked = true;
+    Game.TabPositionOfGroupToRemove.push(token.tabPosition);
+  }
   if (token.precedentToken == undefined) token.precedentToken = precedentToken;
   for (i = 0; i < token.friendTabPosition.length; i++) {
     var explode = token.friendTabPosition[i].split('_');
@@ -147,17 +135,22 @@ function checkLibertyGroup(token, precedentToken) {
   } else return removeGroup();
 }
 
-
-function removeGroup(token) { //recursive
-  console.log('remove group');
-}
-
-
 // Function who remove a token
 function removeSoloToken(token) {
   var currentElement = document.getElementById(token.i + '_' + token.j);
   currentElement.className = 'checkerboardCross';
   Game.token[token.i][token.j] = undefined;
+}
+
+// Function who remove a group of tokens
+function removeGroup() {
+  for (i = 0; i < Game.TabPositionOfGroupToRemove.length; i++) {
+    var currentElement = Game.TabPositionOfGroupToRemove[i].split('_');
+    console.log(currentElement);
+    var remove = document.getElementById(currentElement[0] + '_' + currentElement[1]);
+    remove.className = 'checkerboardCross';
+    Game.token[currentElement[0]][currentElement[1]] = undefined;
+  }
 }
 
 // Function who add an EventListener on an event
@@ -173,8 +166,7 @@ function live(eventType, elementId, callback) {
 for (var i = 0; i < Game.data.td.length; i++) {
 	var currentElement = Game.data.td[i];
 	live('click', currentElement.id, function() {
-    Game.data.numberOfTokenInGroup = 0;
-    Game.data.numberOfTokenInGroupWithoutLiberty = 0;
+    Game.TabPositionOfGroupToRemove = new Array();
     for (i = 0; i < 18; i++) { // reset
       for (j = 0; j < 18; j++) {
         if (Game.token[i][j] != undefined) Game.token[i][j].checked = undefined;
