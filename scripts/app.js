@@ -11,23 +11,43 @@ var Game = {
 			this.i = parseInt(i);
 			this.j = parseInt(j);
 			this.player = Game.data.player;
-			this.liberty = Game.otherFunction.libertyNumber(i, j);
+			this.liberty = libertyNumber(i, j);
 			this.friendTabPosition = new Array();
 			this.group = undefined;
       this.checked = undefined;
       this.precedentToken = undefined;
       this.tabPosition = i + '_' + j;
 		}
-	},
-	otherFunction : {
-		libertyNumber : function (i, j) {
-			if (i == 0 && j == 0 || i == 0 && j == 18 || i == 18 && j == 0 || i == 18 && j == 18) return 2;
-			else if (i == 0 && j != 0 || i == 0 && j != 18 || i == 18 && j != 0 || i == 18 && j != 18) return 3;
-			else if (j == 0 && i != 0 || j == 0 && i != 18 || j == 18 && i != 0 || j == 18 && i != 18) return 3;
-			else return 4;
-		}
 	}
 };
+
+// Function who calculate how many liberty a token have, without looking for his neighbourhood
+function libertyNumber(i, j) {
+  if ((i == 0 && j == 0) ||
+    (i == 0 && j == 18) ||
+    (i == 18 && j == 0) ||
+    (i == 18 && j == 18)) {
+
+   return 2;
+
+  } else if (((i == 0 && j != 0) ||
+    (i == 0 && j != 18) ||
+    (i == 18 && j != 0) ||
+    (i == 18 && j != 18)) ||
+
+    ((j == 0 && i != 0) ||
+    (j == 0 && i != 18) ||
+    (j == 18 && i != 0) ||
+    (j == 18 && i != 18))) {
+
+     return 3;
+
+  } else {
+
+    return 4;
+
+  }
+}
 
 // Function who draw the Game into the DOM
 function drawGame() {
@@ -67,19 +87,19 @@ drawGame();
 
 // Function who calculate who is the neighbour of the target token
 function neighbourhood(i, j, tokenColor) {
-  if (i != 0 && Game.token[parseInt(i) - 1][j] != undefined) { // neighboor on top
+  if (i != 0 && Game.token[parseInt(i) - 1][j] != undefined) { // neighbour on top
     if (tokenColor == Game.token[parseInt(i) - 1][j].player) friend(Game.token[i][j], Game.token[parseInt(i) - 1][j]);
     else ennemi(Game.token[i][j], Game.token[parseInt(i) - 1][j]);
   }
-  if (i != 18 && Game.token[parseInt(i) + 1][j] != undefined) { // neighboor on bottom
+  if (i != 18 && Game.token[parseInt(i) + 1][j] != undefined) { // neighbour on bottom
     if (tokenColor == Game.token[parseInt(i) + 1][j].player) friend(Game.token[i][j], Game.token[parseInt(i) + 1][j]);
     else ennemi(Game.token[i][j], Game.token[parseInt(i) + 1][j]);
   }
-  if (j != 0 && Game.token[i][parseInt(j) - 1] != undefined) { // neighboor on left
+  if (j != 0 && Game.token[i][parseInt(j) - 1] != undefined) { // neighbour on left
     if (tokenColor == Game.token[i][parseInt(j) - 1].player) friend(Game.token[i][j], Game.token[i][parseInt(j) - 1]);
     else ennemi(Game.token[i][j], Game.token[i][parseInt(j) - 1]);
   }
-  if (j != 18 && Game.token[i][parseInt(j) + 1] != undefined) { // neighboor on right
+  if (j != 18 && Game.token[i][parseInt(j) + 1] != undefined) { // neighbour on right
     if (tokenColor == Game.token[i][parseInt(j) + 1].player) friend(Game.token[i][j], Game.token[i][parseInt(j) + 1]); 
     else ennemi(Game.token[i][j], Game.token[i][parseInt(j) + 1]);
   }
@@ -110,9 +130,8 @@ function ennemi(tokenA, tokenB) {
 
 // Function who remove a token
 function removeSoloToken(token) {
-  var currentElement = document.getElementById(token.i + '_' + token.j);
 
-  currentElement.className = 'checkerboardCross';
+  setClass(token.i, token.j);
   Game.token[token.i][token.j] = undefined;
   if (token.i != 18) Game.token[parseInt(token.i) + 1][token.j].liberty++;
   if (token.i != 0) Game.token[parseInt(token.i) - 1][token.j].liberty++;
@@ -163,8 +182,8 @@ function tokenWhoSurround(token, i, j) {
 function removeGroup() {
   for (i = 0; i < Game.data.tabPositionOfGroupToRemove.length; i++) {
     var currentElement = Game.data.tabPositionOfGroupToRemove[i].split('_');
-    var remove = document.getElementById(currentElement[0] + '_' + currentElement[1]);
-    remove.className = 'checkerboardCross';
+
+    setClass(currentElement[0], currentElement[1]);
     Game.token[currentElement[0]][currentElement[1]] = undefined;
   }
   addLibertytoEnnemi();
@@ -176,6 +195,31 @@ function addLibertytoEnnemi() {
     var currentElement = Game.data.tabPositionOfEnnemi[i].split('_');
 
     Game.token[currentElement[0]][currentElement[1]].liberty++;
+  }
+}
+
+// Function who set a css class of a deleted token
+function setClass(i, j) {
+  var css = document.getElementById(i + '_' + j);
+
+  if ((i == 0) && (j == 0)) {
+    css.className = 'checkerboardCornerTopLeft';
+  } else if ((i == 0) && (j == 18)) {
+    css.className = 'checkerboardCornerTopRight';
+  } else if ((i == 18) && (j == 0)) {
+    css.className = 'checkerboardCornerBottomLeft';
+  } else if ((i == 18) && (j == 18)) {
+    css.className = 'checkerboardCornerBottomRight';
+  } else if (j == 0) {
+    css.className = 'checkerboardLeft';
+  } else if (i == 0) {
+    css.className = 'checkerboardTop';
+  } else if (j == 18) {
+    css.className = 'checkerboardRight';
+  } else if (i == 18) {
+    css.className = 'checkerboardBottom';
+  } else {
+    css.className = 'checkerboardCross';
   }
 }
 
@@ -192,8 +236,8 @@ function live(eventType, elementId, callback) {
 for (var i = 0; i < Game.data.td.length; i++) {
 	var currentElement = Game.data.td[i];
 	live('click', currentElement.id, function() {
-    for (i = 0; i < 18; i++) { // NEED TO ADD RESET ONLY ON CONCERNED TOKENS
-      for (j = 0; j < 18; j++) {
+    for (i = 0; i < 19; i++) { // NEED TO ADD RESET ONLY ON CONCERNED TOKENS
+      for (j = 0; j < 19; j++) {
         if (Game.token[i][j] != undefined) Game.token[i][j].checked = undefined;
         if (Game.token[i][j] != undefined) Game.token[i][j].precedentToken = undefined;
       }
