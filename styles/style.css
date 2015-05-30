@@ -10,8 +10,13 @@ h1 {
 	width: 400px;
 	height: 380px;
 	margin: auto;
+    padding-bottom: 50px;
 }
 
+#gamePoint {
+    text-align: center;
+    font-family: 'Futura';
+}
 
 td {
     padding:0;

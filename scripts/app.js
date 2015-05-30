@@ -93,20 +93,16 @@ function drawGame() {
 	}
 	html.innerHTML = draw;
 }
-drawGame();
 
 // Function who copy into the DOM the number of points of each player
-/*function gamePoint() {
-  var html = document.getElementById("gamePoint");
-  var draw = ""
+function gamePoint(playerScore, id, color) {
+  var score = playerScore;
+  var html = document.getElementById(id);
 
-  draw += "<div id = 'blackPlayer'>"
-  draw += parseInt(Game.data.blackPlayer);
-  draw += "</div>"
+  var draw = "<div id = '" + id + "'> Score of " + color + " player : " + score + "</div>";
 
   html.innerHTML = draw;
 }
-gamePoint();*/
 
 // Function who calculate who is the neighbour of the target token
 function neighbourhood(i, j, tokenColor) {
@@ -158,11 +154,21 @@ function removeSoloToken(token) {
   var html = document.getElementById(token.i + '_' + token.j);
 
   html.className = setClass(token.i, token.j);
+
+  if (token.player == 'white') {
+    Game.data.pointBlackPlayer++;
+    gamePoint(Game.data.pointBlackPlayer, 'blackPlayer', 'black');
+  } else {
+    Game.data.pointWhitePlayer++;
+    gamePoint(Game.data.pointWhitePlayer, 'whitePlayer', 'white');
+  }
+
   Game.token[token.i][token.j] = undefined;
   if (token.i != 18) Game.token[parseInt(token.i) + 1][token.j].liberty++;
   if (token.i != 0) Game.token[parseInt(token.i) - 1][token.j].liberty++;
   if (token.j != 18) Game.token[token.i][parseInt(token.j) + 1].liberty++;
   if (token.j != 0) Game.token[token.i][parseInt(token.j) - 1].liberty++;
+
 }
 
 // Function who calculate if the group doesn't have any liberty left
@@ -189,7 +195,7 @@ function checkLibertyGroup(token, precedentToken) {
     checkLibertyGroup(Game.token[explode[0]][explode[1]]);
   } else {
 
-    return removeGroup();
+    return removeGroup(token.player);
   }
 }
 
@@ -205,15 +211,23 @@ function tokenWhoSurround(token, i, j) {
 }
 
 // Function who remove a group of tokens
-function removeGroup() {
-  for (i = 0; i < Game.data.tabPositionOfGroupToRemove.length; i++) {
+function removeGroup(colorOfThisGroup) {
+  var data = Game.data;
+  var token = Game.token
+
+  if (colorOfThisGroup == 'white') data.pointBlackPlayer += data.tabPositionOfGroupToRemove.length;
+  else data.pointWhitePlayer += data.tabPositionOfGroupToRemove.length;
+
+  for (i = 0; i < data.tabPositionOfGroupToRemove.length; i++) {
     var currentElement = Game.data.tabPositionOfGroupToRemove[i].split('_');
     var html = document.getElementById(currentElement[0] + '_' + currentElement[1]);
 
     html.className = setClass(currentElement[0], currentElement[1]);
-    Game.token[currentElement[0]][currentElement[1]] = undefined;
+    token[currentElement[0]][currentElement[1]] = undefined;
   }
   addLibertytoEnnemi();
+  if (colorOfThisGroup == 'white') gamePoint(Game.data.pointBlackPlayer, 'blackPlayer', 'black'); 
+  else gamePoint(Game.data.pointWhitePlayer, 'whitePlayer', 'white');
 }
 
 // Function who add liberty to token who surround a deleted group
@@ -232,6 +246,18 @@ function live(eventType, elementId, callback) {
       callback.call(event.target);
     }
   });
+}
+
+// Create the checkerboard & the array in Game.token
+drawGame();
+gamePoint(Game.data.pointBlackPlayer, 'blackPlayer', 'black');
+gamePoint(Game.data.pointWhitePlayer, 'whitePlayer', 'white');
+
+for (i = 0; i < 19; i++) {
+  Game.token[i] = [];
+  for (j = 0; j < 19; j++) {
+    Game.token[i][j] = undefined;
+  }
 }
 
 // Loop who add click on each intersection
@@ -261,14 +287,6 @@ for (var i = 0; i < Game.data.td.length; i++) {
       Game.data.player = ((Game.data.player == 'white') ? 'black' : 'white');
 		}
 	});
-}
-
-// Create a bidemensional array in Game.token
-for (i = 0; i < 19; i++) {
-  Game.token[i] = [];
-  for (j = 0; j < 19; j++) {
-    Game.token[i][j] = undefined;
-  }
 }
 
 console.log(Game);
