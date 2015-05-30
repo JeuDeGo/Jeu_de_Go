@@ -3,7 +3,9 @@ var Game = {
 		player : 'black',
 		td : document.getElementsByTagName('td'),
     tabPositionOfGroupToRemove : new Array(),
-    tabPositionOfEnnemi : new Array()
+    tabPositionOfEnnemi : new Array(),
+    pointBlackPlayer : 0,
+    pointWhitePlayer : 0
 	},
 	token : new Array(),
 	constructor : {
@@ -49,6 +51,32 @@ function libertyNumber(i, j) {
   }
 }
 
+// Function who set a css class of a deleted token
+function setClass(i, j) {
+  var css;
+
+  if ((i == 0) && (j == 0)) {
+    css = 'checkerboardCornerTopLeft';
+  } else if ((i == 0) && (j == 18)) {
+    css = 'checkerboardCornerTopRight';
+  } else if ((i == 18) && (j == 0)) {
+    css = 'checkerboardCornerBottomLeft';
+  } else if ((i == 18) && (j == 18)) {
+    css = 'checkerboardCornerBottomRight';
+  } else if (j == 0) {
+    css = 'checkerboardLeft';
+  } else if (i == 0) {
+    css = 'checkerboardTop';
+  } else if (j == 18) {
+    css = 'checkerboardRight';
+  } else if (i == 18) {
+    css = 'checkerboardBottom';
+  } else {
+    css = 'checkerboardCross';
+  }
+  return css;
+}
+
 // Function who draw the Game into the DOM
 function drawGame() {
 	var html = document.getElementById("board");
@@ -58,26 +86,8 @@ function drawGame() {
 		draw += "<tr>";
 		for (j = 0; j < 19; j++) {
 			draw += "<td class = "
-			if ((i == 0) && (j == 0)) {
-				draw += "'checkerboardCornerTopLeft'";
-			} else if ((i == 0) && (j == 18)) {
-				draw += "'checkerboardCornerTopRight'";
-			} else if ((i == 18) && (j == 0)) {
-				draw += "'checkerboardCornerBottomLeft'";
-			} else if ((i == 18) && (j == 18)) {
-				draw += "'checkerboardCornerBottomRight'";
-			} else if (j == 0) {
-				draw += "'checkerboardLeft'";
-			} else if (i == 0) {
-				draw += "'checkerboardTop'";
-			} else if (j == 18) {
-				draw += "'checkerboardRight'";
-			} else if (i == 18) {
-				draw += "'checkerboardBottom'";
-			} else {
-				draw += "'checkerboardCross'";
-			}
-			draw += "id='"+ i + "_" + j + "'></td>";
+			draw += setClass(i, j);
+			draw += " id='"+ i + "_" + j + "'></td>";
 		}
 		draw += "</tr>";
 	}
@@ -85,23 +95,38 @@ function drawGame() {
 }
 drawGame();
 
+// Function who copy into the DOM the number of points of each player
+/*function gamePoint() {
+  var html = document.getElementById("gamePoint");
+  var draw = ""
+
+  draw += "<div id = 'blackPlayer'>"
+  draw += parseInt(Game.data.blackPlayer);
+  draw += "</div>"
+
+  html.innerHTML = draw;
+}
+gamePoint();*/
+
 // Function who calculate who is the neighbour of the target token
 function neighbourhood(i, j, tokenColor) {
-  if (i != 0 && Game.token[parseInt(i) - 1][j] != undefined) { // neighbour on top
-    if (tokenColor == Game.token[parseInt(i) - 1][j].player) friend(Game.token[i][j], Game.token[parseInt(i) - 1][j]);
-    else ennemi(Game.token[i][j], Game.token[parseInt(i) - 1][j]);
+  var token = Game.token;
+
+  if (i != 0 && token[parseInt(i) - 1][j] != undefined) { // neighbour on top
+    if (tokenColor == token[parseInt(i) - 1][j].player) friend(token[i][j], token[parseInt(i) - 1][j]);
+    else ennemi(token[i][j], token[parseInt(i) - 1][j]);
   }
-  if (i != 18 && Game.token[parseInt(i) + 1][j] != undefined) { // neighbour on bottom
-    if (tokenColor == Game.token[parseInt(i) + 1][j].player) friend(Game.token[i][j], Game.token[parseInt(i) + 1][j]);
-    else ennemi(Game.token[i][j], Game.token[parseInt(i) + 1][j]);
+  if (i != 18 && token[parseInt(i) + 1][j] != undefined) { // neighbour on bottom
+    if (tokenColor == token[parseInt(i) + 1][j].player) friend(token[i][j], token[parseInt(i) + 1][j]);
+    else ennemi(token[i][j], token[parseInt(i) + 1][j]);
   }
-  if (j != 0 && Game.token[i][parseInt(j) - 1] != undefined) { // neighbour on left
-    if (tokenColor == Game.token[i][parseInt(j) - 1].player) friend(Game.token[i][j], Game.token[i][parseInt(j) - 1]);
-    else ennemi(Game.token[i][j], Game.token[i][parseInt(j) - 1]);
+  if (j != 0 && token[i][parseInt(j) - 1] != undefined) { // neighbour on left
+    if (tokenColor == token[i][parseInt(j) - 1].player) friend(token[i][j], token[i][parseInt(j) - 1]);
+    else ennemi(token[i][j], token[i][parseInt(j) - 1]);
   }
-  if (j != 18 && Game.token[i][parseInt(j) + 1] != undefined) { // neighbour on right
-    if (tokenColor == Game.token[i][parseInt(j) + 1].player) friend(Game.token[i][j], Game.token[i][parseInt(j) + 1]); 
-    else ennemi(Game.token[i][j], Game.token[i][parseInt(j) + 1]);
+  if (j != 18 && token[i][parseInt(j) + 1] != undefined) { // neighbour on right
+    if (tokenColor == token[i][parseInt(j) + 1].player) friend(token[i][j], token[i][parseInt(j) + 1]); 
+    else ennemi(token[i][j], token[i][parseInt(j) + 1]);
   }
 }
 
@@ -130,8 +155,9 @@ function ennemi(tokenA, tokenB) {
 
 // Function who remove a token
 function removeSoloToken(token) {
+  var html = document.getElementById(token.i + '_' + token.j);
 
-  setClass(token.i, token.j);
+  html.className = setClass(token.i, token.j);
   Game.token[token.i][token.j] = undefined;
   if (token.i != 18) Game.token[parseInt(token.i) + 1][token.j].liberty++;
   if (token.i != 0) Game.token[parseInt(token.i) - 1][token.j].liberty++;
@@ -182,8 +208,9 @@ function tokenWhoSurround(token, i, j) {
 function removeGroup() {
   for (i = 0; i < Game.data.tabPositionOfGroupToRemove.length; i++) {
     var currentElement = Game.data.tabPositionOfGroupToRemove[i].split('_');
+    var html = document.getElementById(currentElement[0] + '_' + currentElement[1]);
 
-    setClass(currentElement[0], currentElement[1]);
+    html.className = setClass(currentElement[0], currentElement[1]);
     Game.token[currentElement[0]][currentElement[1]] = undefined;
   }
   addLibertytoEnnemi();
@@ -195,31 +222,6 @@ function addLibertytoEnnemi() {
     var currentElement = Game.data.tabPositionOfEnnemi[i].split('_');
 
     Game.token[currentElement[0]][currentElement[1]].liberty++;
-  }
-}
-
-// Function who set a css class of a deleted token
-function setClass(i, j) {
-  var css = document.getElementById(i + '_' + j);
-
-  if ((i == 0) && (j == 0)) {
-    css.className = 'checkerboardCornerTopLeft';
-  } else if ((i == 0) && (j == 18)) {
-    css.className = 'checkerboardCornerTopRight';
-  } else if ((i == 18) && (j == 0)) {
-    css.className = 'checkerboardCornerBottomLeft';
-  } else if ((i == 18) && (j == 18)) {
-    css.className = 'checkerboardCornerBottomRight';
-  } else if (j == 0) {
-    css.className = 'checkerboardLeft';
-  } else if (i == 0) {
-    css.className = 'checkerboardTop';
-  } else if (j == 18) {
-    css.className = 'checkerboardRight';
-  } else if (i == 18) {
-    css.className = 'checkerboardBottom';
-  } else {
-    css.className = 'checkerboardCross';
   }
 }
 
@@ -235,15 +237,17 @@ function live(eventType, elementId, callback) {
 // Loop who add click on each intersection
 for (var i = 0; i < Game.data.td.length; i++) {
 	var currentElement = Game.data.td[i];
+
 	live('click', currentElement.id, function() {
+    var explode = this.id.split('_');
+    var isToken = this.className;
+
     for (i = 0; i < 19; i++) { // NEED TO ADD RESET ONLY ON CONCERNED TOKENS
       for (j = 0; j < 19; j++) {
         if (Game.token[i][j] != undefined) Game.token[i][j].checked = undefined;
         if (Game.token[i][j] != undefined) Game.token[i][j].precedentToken = undefined;
       }
     }
-		var explode = this.id.split('_');
-		var isToken = this.className;
 		if (isToken != 'tokenWhite' && isToken != 'tokenBlack') { // Prevent click if the cell is a token
 			if (Game.data.player == 'white') {
 				this.className = 'tokenWhite';
