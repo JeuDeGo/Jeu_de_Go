@@ -1,7 +1,7 @@
 # Jeu_de_Go
 Alpha version of a school project (HETIC).
 
-Name : in progress
+Name : Born 2 Hack
 
 Rules : in progress
 
