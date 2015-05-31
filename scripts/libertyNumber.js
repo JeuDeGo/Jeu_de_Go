@@ -19,8 +19,35 @@ function libertyNumber(i, j) {
   }
 }
 
-// Function who add liberty to token who surround a deleted group
-function addLibertytoEnnemi() {
+
+// Function who remove liberty
+function removeLiberty(i, j, origin) {
+  var token = Game.token;
+
+  if (origin != undefined) origin.liberty = libertyNumber(origin.i, origin.j);
+  if (i != 0 && token[parseInt(i) - 1][j] != undefined) { // neighbour on top
+    if (origin != undefined) token[i][j].liberty--;
+    else token[parseInt(i) - 1][j].liberty--;
+  }
+  if (i != 18 && token[parseInt(i) + 1][j] != undefined) { // neighbour on bottom
+    if (origin != undefined) token[i][j].liberty--;
+    else token[parseInt(i) + 1][j].liberty--;
+  }
+  if (j != 0 && token[i][parseInt(j) - 1] != undefined) { // neighbour on left
+    if (origin != undefined) token[i][j].liberty--;
+    else token[i][parseInt(j) - 1].liberty--;
+  }
+  if (j != 18 && token[i][parseInt(j) + 1] != undefined) { // neighbour on right
+    if (origin != undefined) token[i][j].liberty--;
+    else token[i][parseInt(j) + 1].liberty--;
+  }
+}
+
+// Function who add liberty 
+
+// Function who add liberty to a group of token who surround a deleted group
+function addLibertytoGroup() {
+  console.log(Game.data.tabPositionOfEnnemi);
   for (i = 0; i < Game.data.tabPositionOfEnnemi.length; i++) {
     var currentElement = Game.data.tabPositionOfEnnemi[i].split('_');
 
@@ -30,6 +57,7 @@ function addLibertytoEnnemi() {
 
 // Function who calculate if the group doesn't have any liberty left
 function checkLibertyGroup(token, precedentToken) {
+  console.log(token.tabPosition);
   if (token.liberty != 0) {
 
     return 0;

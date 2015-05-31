@@ -2,6 +2,7 @@
 function neighbourhood(i, j, tokenColor) {
   var token = Game.token;
 
+  removeLiberty(i, j);
   if (i != 0 && token[parseInt(i) - 1][j] != undefined) { // neighbour on top
     if (tokenColor == token[parseInt(i) - 1][j].player) friend(token[i][j], token[parseInt(i) - 1][j]);
     else ennemi(token[i][j], token[parseInt(i) - 1][j]);
@@ -18,13 +19,13 @@ function neighbourhood(i, j, tokenColor) {
     if (tokenColor == token[i][parseInt(j) + 1].player) friend(token[i][j], token[i][parseInt(j) + 1]); 
     else ennemi(token[i][j], token[i][parseInt(j) + 1]);
   }
+  removeLiberty(i, j, token[i][j]);
+  //suicide(token[i][j]);
 }
 
 
 // Function who remove liberty and create group
 function friend(tokenA, tokenB) {
-  tokenA.liberty--;
-  tokenB.liberty--;
   tokenA.friendTabPosition.push(tokenB.tabPosition);
   tokenB.friendTabPosition.push(tokenA.tabPosition);
   tokenB.group = true;
@@ -34,8 +35,6 @@ function friend(tokenA, tokenB) {
 
 // Function who remove liberty or token / group of tokens
 function ennemi(tokenA, tokenB) {
-  tokenA.liberty--;
-  tokenB.liberty--;
   if (tokenA.liberty == 0 && tokenA.group == undefined) removeSoloToken(tokenA); // NEED TO PREVENT THIS CASE
   if (tokenB.liberty == 0 && tokenB.group == undefined) removeSoloToken(tokenB);
   if (tokenB.liberty == 0 && tokenB.group == true)  {

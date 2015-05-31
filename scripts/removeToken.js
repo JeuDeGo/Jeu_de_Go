@@ -35,7 +35,7 @@ function removeGroup(colorOfThisGroup) {
     html.className = setClass(currentElement[0], currentElement[1]);
     token[currentElement[0]][currentElement[1]] = undefined;
   }
-  addLibertytoEnnemi();
+  addLibertytoGroup();
   if (colorOfThisGroup == 'white') gamePoint(Game.data.pointBlackPlayer, 'blackPlayer', 'black'); 
   else gamePoint(Game.data.pointWhitePlayer, 'whitePlayer', 'white');
 }
