@@ -4,10 +4,10 @@ function removeSoloToken(token) {
 
   html.className = setClass(token.i, token.j);
 
-  if (token.player == 'white') {
+  if (token.player == 'white' && Game.data.suicide != true) {
     Game.data.pointBlackPlayer++;
     gamePoint(Game.data.pointBlackPlayer, 'blackPlayer', 'black');
-  } else {
+  } else if (token.player == 'black' && Game.data.suicide != true) {
     Game.data.pointWhitePlayer++;
     gamePoint(Game.data.pointWhitePlayer, 'whitePlayer', 'white');
   }

@@ -5,7 +5,8 @@ var Game = {
     tabPositionOfGroupToRemove : new Array(),
     tabPositionOfEnnemi : new Array(),
     pointBlackPlayer : 0,
-    pointWhitePlayer : 0
+    pointWhitePlayer : 0,
+    suicide : false
 	},
 	token : new Array(),
 	constructor : {
