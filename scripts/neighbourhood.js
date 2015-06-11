@@ -35,7 +35,6 @@ function friend(tokenA, tokenB) {
 
 // Function who remove liberty or token / group of tokens
 function ennemi(tokenA, tokenB) {
-  if (tokenA.liberty == 0 && tokenA.group == undefined) removeSoloToken(tokenA); // NEED TO PREVENT THIS CASE
   if (tokenB.liberty == 0 && tokenB.group == undefined) removeSoloToken(tokenB);
   if (tokenB.liberty == 0 && tokenB.group == true)  {
     Game.data.tabPositionOfGroupToRemove = new Array();
