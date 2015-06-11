@@ -6,8 +6,10 @@ var Game = {
     tabPositionOfEnnemi : new Array(),
     pointBlackPlayer : 0,
     pointWhitePlayer : 0,
-    suicide : false
+    suicide : false,
+    koState : false
 	},
+	ko : new Array(),
 	token : new Array(),
 	constructor : {
 		CreateToken : function(i, j) {
