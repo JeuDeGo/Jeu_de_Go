@@ -1,0 +1,24 @@
+extends layout
+
+block content
+	div(id = "areaGame")
+		table(id = "board")
+	div(id="gamePoint")
+		div(id = "blackPlayer")
+		div(id = "whitePlayer")
+	button(id='pass').
+		Pass your turn
+	script(type = "text/javascript", src = "/javascripts/draw.js")
+	script(type = "text/javascript", src = "/javascripts/libertyNumber.js")
+	script(type = "text/javascript", src = "/javascripts/neighbourhood.js")
+	script(type = "text/javascript", src = "/javascripts/removeToken.js")
+	script(type = "text/javascript", src = "/javascripts/score.js")
+	script(type = "text/javascript", src = "/javascripts/suicide.js")
+	script(type = "text/javascript", src = "/javascripts/gameObject.js")
+	script(type = "text/javascript", src = "/javascripts/click.js")
+	script(src="http://code.jquery.com/jquery-1.10.1.min.js")
+	script(src="/socket.io/socket.io.js")
+	script.
+		// Connexion à socket.io
+		var socket = io.connect('http://localhost:3000');
+		// On demande le pseudo, on l'envoie au serveur et on l'affiche dans le titre
