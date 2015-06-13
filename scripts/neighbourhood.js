@@ -19,8 +19,10 @@ function neighbourhood(i, j, tokenColor) {
     if (tokenColor == token[i][parseInt(j) + 1].player) friend(token[i][j], token[i][parseInt(j) + 1]); 
     else ennemi(token[i][j], token[i][parseInt(j) + 1]);
   }
-  removeLiberty(i, j, token[i][j]);
-  if (Game.data.koState == false) suicide(token[i][j]);
+  if (Game.data.koState == false) {
+    suicide(token[i][j]);
+    removeLiberty(i, j, token[i][j]);
+  }
 }
 
 
