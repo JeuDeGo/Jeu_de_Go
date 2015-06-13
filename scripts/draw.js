@@ -6,7 +6,6 @@ function setClass(i, j) {
     switch(j) {
       case 0:
         css = 'checkerboardCornerTopLeft';
-        console.log('yo');
         break;
       case 18:
         css = 'checkerboardCornerTopRight';
