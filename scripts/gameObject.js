@@ -7,7 +7,8 @@ var Game = {
     pointBlackPlayer : 0,
     pointWhitePlayer : 0,
     suicide : false,
-    koState : false
+    koState : false,
+    pass : false
 	},
 	ko : new Array(),
 	token : new Array(),

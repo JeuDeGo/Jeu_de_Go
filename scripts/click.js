@@ -18,6 +18,7 @@ for (var i = 0; i < Game.data.td.length; i++) {
 
     Game.data.suicide = false;
     Game.data.koState = false;
+    Game.data.pass = false;
     for (i = 0; i < 19; i++) { // NEED TO ADD RESET ONLY ON CONCERNED TOKENS
       for (j = 0; j < 19; j++) {
         if (Game.token[i][j] != undefined) Game.token[i][j].checked = undefined;
