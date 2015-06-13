@@ -32,7 +32,7 @@ function removeGroup(colorOfThisGroup) {
     var currentElement = Game.data.tabPositionOfGroupToRemove[i].split('_');
     var html = document.getElementById(currentElement[0] + '_' + currentElement[1]);
 
-    html.className = setClass(currentElement[0], currentElement[1]);
+    html.className = setClass(parseInt(currentElement[0]), parseInt(currentElement[1]));
     token[currentElement[0]][currentElement[1]] = undefined;
   }
   addLibertytoGroup();
