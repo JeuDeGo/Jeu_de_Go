@@ -90,34 +90,3 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
-
-
-/* Pseudo communication */
-
-var pseudos = new Array();
-var i = 0;
-io.sockets.on('connection', function (socket, pseudo) {
-    // Dès qu'on nous donne un pseudo, on le stocke en variable de session et on informe les autres personnes
-    socket.on('nouveau_client', function(pseudo) {
-        i =+ 1;
-        pseudo = ent.encode(pseudo);
-        socket.pseudo = pseudo;
-        pseudos[i] = pseudo;
-
-/* Pseudo check */
-        var error = 0;
-        for (var j = 0; j < pseudos.length; j++) {
-          if (pseudo == pseudo[j]) {
-              error = 1;
-              socket.emit('pseudo_error');
-          }
-          else {
-            error = 0;
-          }
-        }
-        socket.emit('pseudo_ok');
-        socket.broadcast.emit('nouveau_client', pseudo);
-
-    });
-
-});
