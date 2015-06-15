@@ -6,4 +6,4 @@ Rules : in progress
 
 Langages : HTML5, CSS, JS (node.js, Vanilla JS)
 
-Developers : Jean-Christophe Peullat (project manager) Timothé Pearce (technical manager) Margaux Tellier (design manager) Lucie Zevaco (communication manager)
+Developers : Jean-Christophe Pellat (project manager) Timothé Pearce (technical manager) Margaux Tellier (design manager) Lucie Zevaco (communication manager)
