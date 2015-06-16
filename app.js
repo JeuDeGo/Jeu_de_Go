@@ -98,8 +98,6 @@ io.on( "connection", function(socket, nickname, nickname_default)
           console.log('nickname already in use, replacing...' + " --> " + nicknames[i]);
           i =+ 1;
         }
-        socket.emit('nickname', nicknames[i]);
-
 
     });
 });
@@ -113,3 +111,4 @@ Faction managing by using an object, and the 2 factions in it :
   var nicknameTest = new Object(),
       NSA = new Array(),
       ANON = new Array();
+*/
