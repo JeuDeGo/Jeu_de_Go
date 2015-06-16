@@ -107,3 +107,9 @@ io.on( "connection", function(socket, nickname, nickname_default)
 
 module.exports = app;
 
+/*
+TO ADD :
+Faction managing by using an object, and the 2 factions in it :
+  var nicknameTest = new Object(),
+      NSA = new Array(),
+      ANON = new Array();
