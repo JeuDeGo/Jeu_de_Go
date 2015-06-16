@@ -10,10 +10,12 @@ var nsa = require('./routes/nsa');
 var ent = require('ent');
 var fs = require('fs');
 var app = express();
+var socket_io = require("socket.io");
 
-// use socket.io
-var server = app.listen(3030);
-var io = require('socket.io').listen(server);
+
+// Socket.io
+var io = socket_io();
+app.io = io;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -62,23 +64,55 @@ app.use(function(err, req, res, next) {
   });
 });
 
+// socket.io events
+var pseudos = new Array();
+var i = 0;
+io.on( "connection", function(socket, pseudo)
+{
+    console.log( "A user connected" );
 
-module.exports = app;
+    console.log("connection detected");
+    socket.on('nouveau_client', function(pseudo) {
+        i =+ 1;
+        pseudo = ent.encode(pseudo);
+        socket.pseudo = pseudo;
+        pseudos[i] = pseudo;
+        console.log("pseudo : "+pseudo);
 
-/* Pseudo communication */
+/* Pseudo check */
+        var error = 0;
+        for (var j = 0; j < pseudos.length; j++) {
+          if (pseudo == pseudo[j]) {
+              error = 1;
+              socket.emit('pseudo_error');
+          }
+          else {
+            error = 0;
+          }
+        }
+        if (error == 0){
+        socket.emit('pseudo_ok', pseudo);
+        }
+
+    });
+});
+/*
 
 var pseudos = new Array();
 var i = 0;
 io.sockets.on('connection', function (socket, pseudo) {
     // Dès qu'on nous donne un pseudo, on le stocke en variable de session et on informe les autres personnes
+    console.log("connection detected");
     socket.on('nouveau_client', function(pseudo) {
         i =+ 1;
         pseudo = ent.encode(pseudo);
         socket.pseudo = pseudo;
         pseudos[i] = pseudo;
         console.log(pseudo);
+*/
 
 /* Pseudo check */
+/*
         var error = 0;
         for (var j = 0; j < pseudos.length; j++) {
           if (pseudo == pseudo[j]) {
@@ -94,4 +128,7 @@ io.sockets.on('connection', function (socket, pseudo) {
     });
 
 });
+*/
+
+module.exports = app;
 
