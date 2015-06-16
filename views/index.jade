@@ -1,21 +1,20 @@
 extends layout
 
 block content
-	form(action="/nsa" method="post" id="formulaire_pseudo")
-		input(type="text" name="pseudo" id="pseudo" placeholder="Votre pseudo..." size="50" autofocus)
-		input(type="submit" id="envoi_pseudo" value="Envoyer")
+	form(action="/nsa" method="post" id="nickname_form")
+		input(type="text" name="nickname" id="nickname" placeholder="Your nickname..." size="50" autofocus)
+		input(type="submit" id="nickname_send" value="Send")
 
 	script.
-		// connection à socket.io
+		// connection to socket.io
 		var socket = io.connect('http://localhost:3000');
-		var pseudo = "user"+(Math.floor (Math.random() * 1001));
-		console.log(pseudo+" (pseudo alea avant form)");
+		var nickname_default = "user"+(Math.floor (Math.random() * 10001));
+		console.log(nickname_default+" (nickname alea before form)");
 
-		$('#formulaire_pseudo').submit(function () {
-			var pseudo = $('#pseudo').val();
-			socket.emit('nouveau_client', pseudo);
-			console.log(pseudo);
-			document.title = pseudo + ' - ' + document.title;
-		// to add : Ack (good pseudo) or Nack (bad pseudo)
+		$('#nickname_form').submit(function () {
+			var nickname = $('#nickname').val();
+			socket.emit('new_client', nickname, nickname_default);
+			console.log(nickname, nickname_default);
+			document.title = nickname + ' - ' + document.title;
 		});
 		

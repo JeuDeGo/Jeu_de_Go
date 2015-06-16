@@ -65,70 +65,45 @@ app.use(function(err, req, res, next) {
 });
 
 // socket.io events
-var pseudos = new Array();
+var nicknames = new Array();
 var i = 0;
-io.on( "connection", function(socket, pseudo)
+io.on( "connection", function(socket, nickname, nickname_default)
 {
-    console.log( "A user connected" );
-
     console.log("connection detected");
-    socket.on('nouveau_client', function(pseudo) {
-        i =+ 1;
-        pseudo = ent.encode(pseudo);
-        socket.pseudo = pseudo;
-        pseudos[i] = pseudo;
-        console.log("pseudo : "+pseudo);
+    socket.on('new_client', function(nickname, nickname_default) {
+        nickname = ent.encode(nickname);
+        socket.nickname = nickname;
+        
+        console.log("nickname : "+nickname);
 
-/* Pseudo check */
+
+/* Nickname check */
         var error = 0;
-        for (var j = 0; j < pseudos.length; j++) {
-          if (pseudo == pseudo[j]) {
-              error = 1;
-              socket.emit('pseudo_error');
+        for (var j = 0; j < nicknames.length; j++) {
+          if (nickname == nicknames[j]) {
+              error =+ 1;
           }
           else {
-            error = 0;
+            error =+ 0;
           }
         }
         if (error == 0){
-        socket.emit('pseudo_ok', pseudo);
+          nicknames[i] = nickname;
+          console.log('nickname ok' + " --> " + nicknames[i]);
+          i =+ 1;
+
         }
+        else {
+          nicknames[i] = nickname_default;
+          console.log('nickname already in use, replacing...' + " --> " + nicknames[i]);
+          i =+ 1;
+        }
+        socket.emit('nickname', nicknames[i]);
+
 
     });
 });
-/*
 
-var pseudos = new Array();
-var i = 0;
-io.sockets.on('connection', function (socket, pseudo) {
-    // Dès qu'on nous donne un pseudo, on le stocke en variable de session et on informe les autres personnes
-    console.log("connection detected");
-    socket.on('nouveau_client', function(pseudo) {
-        i =+ 1;
-        pseudo = ent.encode(pseudo);
-        socket.pseudo = pseudo;
-        pseudos[i] = pseudo;
-        console.log(pseudo);
-*/
-
-/* Pseudo check */
-/*
-        var error = 0;
-        for (var j = 0; j < pseudos.length; j++) {
-          if (pseudo == pseudo[j]) {
-              error = 1;
-              socket.emit('pseudo_error');
-          }
-          else {
-            error = 0;
-          }
-        }
-        socket.emit('pseudo_ok', pseudo);
-
-    });
-
-});
-*/
 
 module.exports = app;
 
