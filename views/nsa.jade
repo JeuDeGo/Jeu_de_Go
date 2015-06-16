@@ -16,20 +16,7 @@ block content
 	script(type = "text/javascript", src = "/javascripts/suicide.js")
 	script(type = "text/javascript", src = "/javascripts/gameObject.js")
 	script(type = "text/javascript", src = "/javascripts/click.js")
-	script(src="http://code.jquery.com/jquery-1.10.1.min.js")
 	script.
 		// connection to socket.io
 		var socket = io.connect('http://localhost:3000');
-		console.log("test");
-
-		io.sockets.on('connection', function (socket, pseudo) {
-			console.log(pseudo);
-
-			socket.on('pseudo_ok', function(pseudo) {
-				var pseudo = pseudo;
-				console.log(pseudo);
-			});
-			socket.on('pseudo_error', function() {
-				console.log("error");
-			});
 		)};
