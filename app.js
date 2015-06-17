@@ -84,6 +84,7 @@ app.use(function(err, req, res, next) {
   });
 });
 
+
 io.use(function(socket, next) {
     try {
         var data = socket.handshake || socket.request;
@@ -119,11 +120,16 @@ io.use(function(socket, next) {
 io.on( "connection", function(socket, nickname, nickname_default)
 {
     console.log("connection detected");
+    console.log(sessionStore);
+
+/* Nickname check 
+
     socket.on('new_client', function(nickname, nickname_default) {
         nickname = ent.encode(nickname);
         socket.nickname = nickname;
         console.log("nickname : "+nickname);
-/* Nickname check */
+
+
         var i = 0; //
         var error = 0;
         for (var j = 0; j < nicknames.length; j++) {
@@ -148,7 +154,10 @@ io.on( "connection", function(socket, nickname, nickname_default)
         }
     socket.emit("nickname_checked", nickname);
 
+  */
+  
     });
+
 });
 
 
