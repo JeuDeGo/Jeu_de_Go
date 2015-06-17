@@ -1,6 +1,9 @@
 extends layout
 
 block content
+	form(action="/" method="post" id="attack_form")
+		input(type="text" name="attack" id="attack" placeholder="Your attack..." size="50" autofocus)
+		input(type="submit" id="attack_send" value="Send")
 	div(id = "areaGame")
 		table(id = "board")
 	div(id="gamePoint")
@@ -19,3 +22,13 @@ block content
 	script.
 		// connection to socket.io
 		var socket = io.connect('http://localhost:3000');
+		console.log(sessId);
+		console.log(nickname);
+		console.log("test");
+
+		('#attack_form').submit(function () {
+			var nickname = $('#nickname').val();
+			socket.emit('new_client', nickname, nickname_default);
+			console.log(nickname, nickname_default);
+			document.title = nickname + ' - ' + document.title;
+		});

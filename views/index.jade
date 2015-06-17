@@ -8,6 +8,7 @@ block content
 	script.
 		// connection to socket.io
 		var socket = io.connect('http://localhost:3000');
+		console.log("test");
 		var nickname_default = "user"+(Math.floor (Math.random() * 10001));
 		console.log(nickname_default+" (nickname alea before form)");
 
@@ -16,6 +17,9 @@ block content
 			socket.emit('new_client', nickname, nickname_default);
 			console.log(nickname, nickname_default);
 			document.title = nickname + ' - ' + document.title;
+			socket.on("nickname_checked", function(nickname) {
+				console.log(nickname);
+			});
 		});
 
 		

@@ -11,11 +11,18 @@ var ent = require('ent');
 var fs = require('fs');
 var app = express();
 var socket_io = require("socket.io");
+  session = require('express-session'),
+  cookie = require('cookie'),
+  sessionStore = new session.MemoryStore();
 
+
+var COOKIE_SECRET = 'secret';
+var COOKIE_NAME = 'sid';
 
 // Socket.io
 var io = socket_io();
 app.io = io;
+var nicknames = new Array(); // array of all the online users
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -26,8 +33,21 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser(COOKIE_SECRET));
+app.use(session({
+    name: COOKIE_NAME,
+    store: sessionStore,
+    secret: COOKIE_SECRET,
+    saveUninitialized: true,
+    resave: true,
+    cookie: {
+        path: '/',
+        httpOnly: true,
+        secure: false,
+        maxAge: null
+    }
+}));
 
 app.use('/', routes);
 app.use('/users', users);
@@ -64,20 +84,47 @@ app.use(function(err, req, res, next) {
   });
 });
 
+io.use(function(socket, next) {
+    try {
+        var data = socket.handshake || socket.request;
+        if (! data.headers.cookie) {
+            return next(new Error('Missing cookie headers'));
+        }
+        console.log('cookie header ( %s )', JSON.stringify(data.headers.cookie));
+        var cookies = cookie.parse(data.headers.cookie);
+        console.log('cookies parsed ( %s )', JSON.stringify(cookies));
+        if (! cookies[COOKIE_NAME]) {
+            return next(new Error('Missing cookie ' + COOKIE_NAME));
+        }
+        var sid = cookieParser.signedCookie(cookies[COOKIE_NAME], COOKIE_SECRET);
+        if (! sid) {
+            return next(new Error('Cookie signature is not valid'));
+        }
+        console.log('session ID ( %s )', sid);
+        data.sid = sid;
+        sessionStore.get(sid, function(err, session) {
+            if (err) return next(err);
+            if (! session) return next(new Error('session not found'));
+            data.session = session;
+            next();
+        });
+    } catch (err) {
+        console.error(err.stack);
+        next(new Error('Internal server error'));
+    }
+});
+
 // socket.io events
-var nicknames = new Array();
-var i = 0;
+
 io.on( "connection", function(socket, nickname, nickname_default)
 {
     console.log("connection detected");
     socket.on('new_client', function(nickname, nickname_default) {
         nickname = ent.encode(nickname);
         socket.nickname = nickname;
-        
         console.log("nickname : "+nickname);
-
-
 /* Nickname check */
+        var i = 0; //
         var error = 0;
         for (var j = 0; j < nicknames.length; j++) {
           if (nickname == nicknames[j]) {
@@ -90,14 +137,16 @@ io.on( "connection", function(socket, nickname, nickname_default)
         if (error == 0){
           nicknames[i] = nickname;
           console.log('nickname ok' + " --> " + nicknames[i]);
+          nickname = nicknames[i];
           i =+ 1;
-
         }
         else {
           nicknames[i] = nickname_default;
           console.log('nickname already in use, replacing...' + " --> " + nicknames[i]);
+          nickname = nicknames[i];
           i =+ 1;
         }
+    socket.emit("nickname_checked", nickname);
 
     });
 });
@@ -109,6 +158,7 @@ module.exports = app;
 TO ADD :
 Faction managing by using an object, and the 2 factions in it :
   var nicknameTest = new Object(),
-      NSA = new Array(),
-      ANON = new Array();
+      KeyAuth
+        nickname
+        faction
 */
