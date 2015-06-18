@@ -22,12 +22,21 @@ block content
 	script.
 		// connection to socket.io
 		var socket = io.connect('http://localhost:3000');
-		console.log(nickname);
 		console.log("test");
-
+		/*
 		('#attack_form').submit(function () {
 			var nickname = $('#nickname').val();
 			socket.emit('new_client', nickname, nickname_default);
 			console.log(nickname, nickname_default);
 			document.title = nickname + ' - ' + document.title;
 		});
+		*/
+		socket.on("board_refresh", function(game){
+			console.log("Board reçu");
+			Game.data = game.data;
+			Game.token = game.token;
+			Game.ko = game.ko;
+			console.log(Game);
+			
+
+			});

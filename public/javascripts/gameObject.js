@@ -5,8 +5,12 @@ var Game = {
     tabPositionOfGroupToRemove : new Array(),
     tabPositionOfEnnemi : new Array(),
     pointBlackPlayer : 0,
-    pointWhitePlayer : 0
+    pointWhitePlayer : 0,
+    suicide : false,
+    koState : false,
+    pass : false
 	},
+	ko : new Array(),
 	token : new Array(),
 	constructor : {
 		CreateToken : function(i, j) {

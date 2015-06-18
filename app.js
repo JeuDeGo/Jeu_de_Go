@@ -84,7 +84,7 @@ app.use(function(err, req, res, next) {
   });
 });
 
-
+/*
 io.use(function(socket, next) {
     try {
         var data = socket.handshake || socket.request;
@@ -114,6 +114,8 @@ io.use(function(socket, next) {
         next(new Error('Internal server error'));
     }
 });
+
+*/
 
 // socket.io events
 
@@ -156,8 +158,11 @@ io.on( "connection", function(socket, nickname, nickname_default)
 
   */
   
-    });
-
+  socket.on("board_send", function(Game) {
+    var game = Game;
+    socket.broadcast.emit("board_refresh", game);
+    console.log(game);
+  });
 });
 
 
