@@ -62,7 +62,6 @@ function drawGame() {
 function drawAgain() {
   var html = document.getElementById("board");
   var draw = "";
-  console.log('yo');
   
   for (i = 0; i < 19; i++) {
     draw += "<tr>";
