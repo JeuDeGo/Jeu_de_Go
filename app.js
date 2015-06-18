@@ -161,7 +161,7 @@ io.on( "connection", function(socket, nickname, nickname_default)
   socket.on("board_send", function(Game) {
     var game = Game;
     socket.broadcast.emit("board_refresh", game);
-    console.log(game);
+    console.log(game.ko);
   });
 });
 
