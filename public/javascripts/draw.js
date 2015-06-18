@@ -57,3 +57,25 @@ function drawGame() {
   }
   html.innerHTML = draw;
 }
+
+// Function who draw again the Game object
+function drawAgain() {
+  var html = document.getElementById("board");
+  var draw = "";
+  console.log('yo');
+  
+  for (i = 0; i < 19; i++) {
+    draw += "<tr>";
+    for (j = 0; j < 19; j++) {
+      draw += "<td class = "
+      if (Game.token[i][j] != undefined) {
+        if (Game.token[i][j].player == 'white') draw += 'tokenWhite';
+        else draw += 'tokenBlack';
+      }
+      else draw += setClass(i, j);
+      draw += " id='"+ i + "_" + j + "'></td>";
+    }
+    draw += "</tr>";
+  }
+  html.innerHTML = draw;
+}
