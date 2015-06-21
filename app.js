@@ -84,39 +84,6 @@ app.use(function(err, req, res, next) {
   });
 });
 
-/*
-io.use(function(socket, next) {
-    try {
-        var data = socket.handshake || socket.request;
-        if (! data.headers.cookie) {
-            return next(new Error('Missing cookie headers'));
-        }
-        console.log('cookie header ( %s )', JSON.stringify(data.headers.cookie));
-        var cookies = cookie.parse(data.headers.cookie);
-        console.log('cookies parsed ( %s )', JSON.stringify(cookies));
-        if (! cookies[COOKIE_NAME]) {
-            return next(new Error('Missing cookie ' + COOKIE_NAME));
-        }
-        var sid = cookieParser.signedCookie(cookies[COOKIE_NAME], COOKIE_SECRET);
-        if (! sid) {
-            return next(new Error('Cookie signature is not valid'));
-        }
-        console.log('session ID ( %s )', sid);
-        data.sid = sid;
-        sessionStore.get(sid, function(err, session) {
-            if (err) return next(err);
-            if (! session) return next(new Error('session not found'));
-            data.session = session;
-            next();
-        });
-    } catch (err) {
-        console.error(err.stack);
-        next(new Error('Internal server error'));
-    }
-});
-
-*/
-
 // socket.io events
 
 io.on( "connection", function(socket, nickname, nickname_default)
@@ -124,39 +91,6 @@ io.on( "connection", function(socket, nickname, nickname_default)
     console.log("connection detected");
     console.log(sessionStore);
 
-/* Nickname check 
-
-    socket.on('new_client', function(nickname, nickname_default) {
-        nickname = ent.encode(nickname);
-        socket.nickname = nickname;
-        console.log("nickname : "+nickname);
-
-
-        var i = 0; //
-        var error = 0;
-        for (var j = 0; j < nicknames.length; j++) {
-          if (nickname == nicknames[j]) {
-              error =+ 1;
-          }
-          else {
-            error =+ 0;
-          }
-        }
-        if (error == 0){
-          nicknames[i] = nickname;
-          console.log('nickname ok' + " --> " + nicknames[i]);
-          nickname = nicknames[i];
-          i =+ 1;
-        }
-        else {
-          nicknames[i] = nickname_default;
-          console.log('nickname already in use, replacing...' + " --> " + nicknames[i]);
-          nickname = nicknames[i];
-          i =+ 1;
-        }
-    socket.emit("nickname_checked", nickname);
-
-  */
   
   socket.on("board_send", function(Game) {
     var game = Game;
