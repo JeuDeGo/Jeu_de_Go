@@ -8,7 +8,7 @@ Rules : in progress
 Langages : HTML5, CSS, JS (node.js, Vanilla JS)
 
 Developers : 
-Jean-Christophe Peullat (project manager)
+Jean-Christophe Pellat (project manager)
 Timothé Pearce (technical manager)
 Margaux Tellier (design manager)
 Lucie Zevaco (communication manager)
