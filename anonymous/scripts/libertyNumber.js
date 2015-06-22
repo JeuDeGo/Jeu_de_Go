@@ -76,6 +76,9 @@ function checkLibertyGroup(token, precedentToken) {
   if (token.precedentToken != undefined) {
     explode = token.precedentToken.split('_');
     checkLibertyGroup(Game.token[explode[0]][explode[1]]);
+  } else if (Game.data.player == token.player) {
+
+    Game.data.suicide = true;
   } else {
 
     return removeGroup(token.player);

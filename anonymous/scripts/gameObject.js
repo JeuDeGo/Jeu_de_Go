@@ -5,8 +5,12 @@ var Game = {
     tabPositionOfGroupToRemove : new Array(),
     tabPositionOfEnnemi : new Array(),
     pointBlackPlayer : 0,
-    pointWhitePlayer : 0
+    pointWhitePlayer : 0,
+    suicide : false,
+    koState : false,
+    pass : false
 	},
+	ko : new Array(),
 	token : new Array(),
 	constructor : {
 		CreateToken : function(i, j) {
@@ -19,7 +23,18 @@ var Game = {
       this.checked = undefined;
       this.precedentToken = undefined;
       this.tabPosition = i + '_' + j;
-		}
+		},
+		CreateTerritory : function(i, j) {
+      this.i = parseInt(i);
+      this.j = parseInt(j);
+      this.territory = true;
+      this.checked = undefined;
+      this.precedentTerritory = undefined;
+      this.friendTabPosition = new Array();
+      this.tabPosition = i + '_' + j;
+      this.black = false;
+      this.white = false;
+    }
 	}
 };
 

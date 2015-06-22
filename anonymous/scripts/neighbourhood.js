@@ -19,8 +19,10 @@ function neighbourhood(i, j, tokenColor) {
     if (tokenColor == token[i][parseInt(j) + 1].player) friend(token[i][j], token[i][parseInt(j) + 1]); 
     else ennemi(token[i][j], token[i][parseInt(j) + 1]);
   }
-  removeLiberty(i, j, token[i][j]);
-  suicide(token[i][j]);
+  if (Game.data.koState == false) {
+    suicide(token[i][j]);
+    removeLiberty(i, j, token[i][j]);
+  }
 }
 
 
@@ -35,8 +37,10 @@ function friend(tokenA, tokenB) {
 
 // Function who remove liberty or token / group of tokens
 function ennemi(tokenA, tokenB) {
-  if (tokenA.liberty == 0 && tokenA.group == undefined) removeSoloToken(tokenA); // NEED TO PREVENT THIS CASE
-  if (tokenB.liberty == 0 && tokenB.group == undefined) removeSoloToken(tokenB);
+  if (tokenB.liberty == 0 && tokenB.group == undefined) {
+    ko(tokenA, tokenB);
+    if (Game.data.koState == false) removeSoloToken(tokenB);
+  }
   if (tokenB.liberty == 0 && tokenB.group == true)  {
     Game.data.tabPositionOfGroupToRemove = new Array();
     Game.data.tabPositionOfEnnemi = new Array();

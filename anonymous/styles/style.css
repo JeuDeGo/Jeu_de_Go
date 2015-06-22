@@ -94,8 +94,8 @@ td {
 
 #mail {
     position: absolute;
-    width: 389px;
-    height: 385px;
+    width: 385px;
+    height: 367px;
     margin-top: 270px;
     margin-left: 870px;
     background-image: url('../images/email2.jpg')
@@ -132,4 +132,12 @@ td {
     font-size: 12px;
     color: #33c841;
     line-height: 25px;
+}
+
+/* Button pass */
+
+#pass {
+    position: absolute;
+    margin-top: -400px;
+    margin-left: 450px;
 }
