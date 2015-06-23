@@ -1,0 +1,37 @@
+extends layout
+
+block content
+
+	script.
+		// connection to socket.io
+		var socket = io.connect('http://localhost:3000');
+		alert("Adversary list is loading... please wait.");
+		socket.on("currentUsers", function(PLAYERS){
+			var d=document.getElementsByName('AdversaryList')[0];
+
+			console.log(PLAYERS);
+
+			for(var player in PLAYERS) {
+				d.length++;
+				d.options[d.length-1].text = player;
+			}
+
+		});
+		$('#attack_form').submit(function () {
+				var ennemyNick = $('#AdversaryList' option:selected).text();
+
+				if (PLAYERS[ennemyNick]) {
+					var ennemyId = PLAYERS[ennemyNick];
+					socket.emit("attack", ennemyId, nickname)
+					console.log("attack");
+				} else {
+					alert("Adversary not found...");	
+				}
+			});
+		
+
+	
+	form(action="/nsa" method="post" id="attack_form")
+		select(name="AdversaryList" id="AdversaryList")
+		option(SELECTED="Chose your adversary")
+		input(type="submit" id="attack_send" value="Send")

@@ -1,0 +1,38 @@
+extends layout
+
+block content
+
+	link(rel='stylesheet', href='/stylesheets/anon/style.css')
+	link(rel='stylesheet', href='/stylesheets/anon/hack.css')
+
+	div(id = "terminal")
+		div(class = "output-console")
+		div(id = "gamePoint")
+			div(id = "blackPlayer")
+			div(id = "whitePlayer")
+		div(id = "areaGame")
+			table(id = "board")
+	div(id = "score")
+	div(id = "mail")
+	div(id = "chat")
+	div(id = "fichePerso")
+
+	div()
+		a(id = 'pass' onclick = "turn()").
+			Pass your turn
+	script(type = "text/javascript", src = "/javascripts/draw.js")
+	script(type = "text/javascript", src = "/javascripts/libertyNumber.js")
+	script(type = "text/javascript", src = "/javascripts/neighbourhood.js")
+	script(type = "text/javascript", src = "/javascripts/removeToken.js")
+	script(type = "text/javascript", src = "/javascripts/score.js")
+	script(type = "text/javascript", src = "/javascripts/suicide.js")
+	script(type = "text/javascript", src = "/javascripts/gameObject.js")
+	script(type = "text/javascript", src = "/javascripts/click.js")
+	script(type = "text/javascript", src = "/javascripts/ko.js")
+	script(type = "text/javascript", src = "/javascripts/turn.js")
+	script(type = "text/javascript", src = "/javascripts/territory.js")
+	script(type = "text/javascript", src = "/javascripts/hack.js")
+
+	script.
+		// connection to socket.io
+		var socket = io.connect('http://localhost:3000');
