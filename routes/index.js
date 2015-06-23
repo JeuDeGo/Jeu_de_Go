@@ -4,9 +4,9 @@ var router = express.Router();
 /* get home page. */
 router.get("/", function (req, res) {
   // Show form, default value = current nickname
-  res.render("index", { "nickname": req.session.nickname, "error": null });
+  res.render("index", { /*"nickname": req.session.nickname, "error": null*/ });
 });
-
+/*
 router.post('/', function(req, res, next) {
   var options = { "nickname": req.body.nickname, "error": null };
   if (!req.body.nickname) {
@@ -26,6 +26,6 @@ router.post('/', function(req, res, next) {
   });
   }
 });
-
+*/
 module.exports = router;
 

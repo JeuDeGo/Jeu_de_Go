@@ -7,6 +7,8 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var nsa = require('./routes/nsa');
+var vs = require('./routes/vs');
+var anon = require('./routes/anon');
 var ent = require('ent');
 var fs = require('fs');
 var app = express();
@@ -15,6 +17,9 @@ var socket_io = require("socket.io");
   cookie = require('cookie'),
   sessionStore = new session.MemoryStore();
 
+var PLAYERS = {};
+var sourceId = "";
+var sourceNick = "";
 
 var COOKIE_SECRET = 'secret';
 var COOKIE_NAME = 'sid';
@@ -52,6 +57,8 @@ app.use(session({
 app.use('/', routes);
 app.use('/users', users);
 app.use('/nsa', nsa);
+app.use('/vs', vs),
+app.use('/anon', anon);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -86,17 +93,64 @@ app.use(function(err, req, res, next) {
 
 // socket.io events
 
-io.on( "connection", function(socket, nickname, nickname_default)
+io.on( "connection", function(socket, nickname)
 {
+    
+    socket.broadcast.emit("currentUsers", PLAYERS);
     console.log("connection detected");
-    console.log(sessionStore);
 
-  
+-/* Nickname check 
+*/
+
+  socket.on('new_client', function(nickname, nickname_default) {
+        socket.emit("currentUsers", PLAYERS);
+        socket.broadcast.emit("currentUsers", PLAYERS);
+        nickname = ent.encode(nickname);
+        socket.nickname = nickname;
+        console.log("nickname : "+nickname);
+
+        var i = 0; //
+        var error = 0;
+        for (var j = 0; j < nicknames.length; j++) {
+          if (nickname == nicknames[j]) {
+              error =+ 1;
+         }
+          else {
+            error =+ 0;
+          }
+        }
+        if (error == 0){
+          nicknames[i] = nickname;
+          console.log('nickname ok' + " --> " + nicknames[i]);
+
+
+
+          i =+ 1;
+        }
+        else {
+          nicknames[i] = nickname_default;
+          console.log('nickname already in use, replacing...' + " --> " + nicknames[i]);
+
+         i =+ 1;
+       }
+        PLAYERS[nickname] = socket.id;
+        socket.broadcast.emit("currentUsers", PLAYERS);
+  });
+
+
   socket.on("board_send", function(Game) {
     var game = Game;
     socket.broadcast.emit("board_refresh", game);
     console.log(game.ko);
   });
+
+  socket.on("attack", function(ennemyId, nickname){
+    sourceNick = nickname;
+    sourceId = PLAYERS[sourceNick];
+    socket(ennemyId).emit("underAttack", ennemyId, sourceNick, sourceId);
+    console.log("attack");
+  });
+
 });
 
 

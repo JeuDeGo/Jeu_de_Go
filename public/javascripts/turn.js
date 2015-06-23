@@ -4,6 +4,7 @@ function turn() {
   if (Game.data.pass == true) {
     
     // NEED TO ADD CALCUL OF TERRITORY
+    territory();
     alert('end of game');
   }
   Game.data.pass = true;
