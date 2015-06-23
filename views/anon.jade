@@ -36,3 +36,16 @@ block content
 	script.
 		// connection to socket.io
 		var socket = io.connect('http://localhost:3000');
+		socket.emit("requestPlayers");
+		socket.on("currentUsers", function(PLAYERS){
+			console.log(PLAYERS);
+			})
+		socket.on("board_refresh", function(game){
+			console.log("Board reçu");
+			Game.data = game.data;
+			Game.token = game.token;
+			Game.ko = game.ko;
+			console.log(Game);
+			drawAgain();
+
+			});

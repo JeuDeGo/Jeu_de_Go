@@ -151,6 +151,10 @@ io.on( "connection", function(socket, nickname)
     console.log("attack");
   });
 
+  socket.on("requestPlayers", function(){
+    socket.emit("currentUsers", PLAYERS);
+  });
+
 });
 
 
