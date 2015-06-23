@@ -137,7 +137,25 @@ td {
 /* Button pass */
 
 #pass {
+    background-color : #33c841;
+    font-family: 'Source Code Pro';
+    font-size: 14px;
+    cursor: pointer;
     position: absolute;
     margin-top: -400px;
     margin-left: 450px;
+    padding: 5px;
+    border: 1px solid #33c841;
+    border-radius: 10%;
+}
+
+/* Fiche perso */
+
+#fichePerso {
+    position: absolute;
+    top: 5%;
+    left: 65%;
+    width: 500px;
+    height: 125px;
+    background-image: url('../images/ficheTechniqueAno.png')
 }
