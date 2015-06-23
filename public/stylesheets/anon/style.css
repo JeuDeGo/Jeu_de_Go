@@ -29,13 +29,14 @@ td {
     margin-top: 10px;
 }
 
-#areagame {
+#board {
     display: block;
     width: 380px;
     height: 380px;
     margin-left: 20px;
     padding-top: 40px;
 }
+
 
 .checkerboardCornerTopLeft {
     background:url('../../images/anon/checkerboardCornerTopLeft.jpg');
