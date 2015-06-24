@@ -29,7 +29,7 @@ td {
     margin-top: 10px;
 }
 
-#board {
+#areagame {
     display: block;
     width: 380px;
     height: 380px;
@@ -154,7 +154,7 @@ td {
 #fichePerso {
     position: absolute;
     top: 5%;
-    left: 65%;
+    left: 66%;
     width: 500px;
     height: 125px;
     background-image: url('../images/ficheTechniqueAno.png')
