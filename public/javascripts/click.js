@@ -26,16 +26,19 @@ for (var i = 0; i < Game.data.td.length; i++) {
       }
     }
 		if (isToken != 'tokenWhite' && isToken != 'tokenBlack') { // Prevent click if the cell is a token
-			if (Game.data.player == 'white') {
+			if (Game.data.player == 'white' && black == false) {
 				this.className = 'tokenWhite';
 				Game.token[explode[0]][explode[1]] = new Game.constructor.CreateToken(explode[0], explode[1]);
         neighbourhood(explode[0], explode[1], Game.token[explode[0]][explode[1]].player);
-			} else {
+			} else if (Game.data.player == 'black' && black == true) {
 				this.className = 'tokenBlack';
         Game.token[explode[0]][explode[1]] = new Game.constructor.CreateToken(explode[0], explode[1]);
         neighbourhood(explode[0], explode[1], Game.token[explode[0]][explode[1]].player);
 			}
-      Game.data.player = ((Game.data.player == 'white') ? 'black' : 'white');
+      if ((Game.data.player == 'black' && black == true) ||
+      (Game.data.player == 'white' && black == false)) { 
+        Game.data.player = ((Game.data.player == 'white') ? 'black' : 'white');
+      }
 		}
     var socket = io.connect('http://localhost:3000');
     socket.emit("board_send", Game);
