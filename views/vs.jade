@@ -7,9 +7,12 @@ block content
 		var socket = io.connect('http://localhost:3000');
 		alert("Adversary list is loading... please wait.");
 		socket.on("currentUsers", function(PLAYERS){
+		socket.emit("askForFaction");
+
 			var d=document.getElementsByName('AdversaryList')[0];
 
 			console.log(PLAYERS);
+
 
 			for(var player in PLAYERS) {
 				d.length++;
@@ -17,8 +20,16 @@ block content
 			}
 
 		});
+
+		socket.on("black", function(){
+			console.log("faction : black");
+			})
+		socket.on("white", function(){
+			console.log("faction : white");
+			})
+
 		$('#attack_form').submit(function () {
-				var ennemyNick = $('#AdversaryList' option:selected).text();
+				var ennemyNick = $('#AdversaryList').text();
 
 				if (PLAYERS[ennemyNick]) {
 					var ennemyId = PLAYERS[ennemyNick];
@@ -31,7 +42,7 @@ block content
 		
 
 	
-	form(action="/nsa" method="post" id="attack_form")
+	form(action="/anon" method="post" id="attack_form")
 		select(name="AdversaryList" id="AdversaryList")
 		option(SELECTED="Chose your adversary")
 		input(type="submit" id="attack_send" value="Send")

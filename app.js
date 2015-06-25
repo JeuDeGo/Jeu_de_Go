@@ -17,9 +17,12 @@ var socket_io = require("socket.io");
   cookie = require('cookie'),
   sessionStore = new session.MemoryStore();
 
-var PLAYERS = {};
+var PLAYERS = {
+};
 var sourceId = "";
 var sourceNick = "";
+var countConnection = 0;
+
 
 var COOKIE_SECRET = 'secret';
 var COOKIE_NAME = 'sid';
@@ -96,14 +99,13 @@ app.use(function(err, req, res, next) {
 io.on( "connection", function(socket, nickname)
 {
     
-    socket.broadcast.emit("currentUsers", PLAYERS);
     console.log("connection detected");
 
 -/* Nickname check 
 */
 
   socket.on('new_client', function(nickname, nickname_default) {
-        socket.emit("currentUsers", PLAYERS);
+        countConnection++;
         socket.broadcast.emit("currentUsers", PLAYERS);
         nickname = ent.encode(nickname);
         socket.nickname = nickname;
@@ -122,19 +124,18 @@ io.on( "connection", function(socket, nickname)
         if (error == 0){
           nicknames[i] = nickname;
           console.log('nickname ok' + " --> " + nicknames[i]);
-
-
-
+          PLAYERS[nicknames[i]] = socket.id;
+          socket.broadcast.emit("currentUsers", PLAYERS);
           i =+ 1;
         }
         else {
           nicknames[i] = nickname_default;
+          nickname = nickname_default;
           console.log('nickname already in use, replacing...' + " --> " + nicknames[i]);
-
+          PLAYERS[nicknames[i]] = socket.id;
+          socket.broadcast.emit("currentUsers", PLAYERS);
          i =+ 1;
        }
-        PLAYERS[nickname] = socket.id;
-        socket.broadcast.emit("currentUsers", PLAYERS);
   });
 
 
@@ -151,9 +152,18 @@ io.on( "connection", function(socket, nickname)
     console.log("attack");
   });
 
-  socket.on("requestPlayers", function(){
-    socket.emit("currentUsers", PLAYERS);
+  socket.on("askForFaction", function(){
+    console.log(countConnection%2);
+    if (countConnection%2 == 0) {
+      socket.emit("black");
+      console.log("sending black");
+    }
+    else {
+      socket.emit("white");
+      console.log("sending white");
+    }
   });
+
 
 });
 
