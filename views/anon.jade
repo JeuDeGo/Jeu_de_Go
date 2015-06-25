@@ -15,6 +15,10 @@ block content
 	div(id = "score")
 	div(id = "mail")
 	div(id = "chat")
+		div(id="zoneChat")
+		form(action="/" method="post" id="formulaire_chat")
+			input(type="text" name="message" id="message" placeholder="Votre message..." size="50" autofocus)
+			input(type="submit" id="envoi_message" value="Envoyer")
 	div(id = "fichePerso")
 
 	div()
@@ -50,3 +54,29 @@ block content
 
 			});
 		socket.emit("askForJoinRoom");
+
+		var pseudo = prompt('Quel est votre pseudo ?');
+		socket.emit('nouveau_client', pseudo);
+		document.title = pseudo + ' - ' + document.title;
+		// Quand on reçoit un message, on l'insère dans la page
+		socket.on('message', function(data) {
+			insereMessage(data.pseudo, data.message)
+		})
+		
+		// Quand un nouveau client se connecte, on affiche l'information
+		socket.on('nouveau_client', function(pseudo) {
+			$('#zoneChat').prepend('<p><em>' + pseudo + ' a rejoint le Chat !</em></p>');
+		})
+
+		// Lorsqu'on envoie le formulaire, on transmet le message et on l'affiche sur la page
+		$('#formulaire_chat').submit(function() {
+			var message = $('#message').val();
+			socket.emit('message', message); // Transmet le message aux autres
+			insereMessage(pseudo, message); // Affiche le message aussi sur notre page
+			$('#message').val('').focus(); // Vide la zone de Chat et remet le focus dessus
+			return false; // Permet de bloquer l'envoi "classique" du formulaire
+		});
+		// Ajoute un message dans la page
+		function insereMessage(pseudo, message) {
+			$('#zoneChat').prepend('<p><strong>' + pseudo + '</strong> ' + message + '</p>');
+		}
