@@ -113,6 +113,23 @@ td {
     background-image: url('../../images/anon/fenetrechat2.jpg');
 }
 
+#zoneChat {
+    position : absolute;
+    top : 63%;
+    left : 3%;
+    width : 660px;
+    height: 159px;
+    color : white;
+    overflow : auto;
+
+
+}
+
+#formulaire_chat {
+    position : absolute;
+    top : 81%;
+    left: 3%;
+}
 /* Score */
 
 #score {
