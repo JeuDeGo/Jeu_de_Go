@@ -21,7 +21,7 @@ var PLAYERS = {
 };
 var sourceId = "";
 var sourceNick = "";
-var countConnection = 0;
+var countConnection = -1;
 var roomNameSending = "room0";
 var CounterRoom = 0;
 
@@ -98,7 +98,7 @@ app.use(function(err, req, res, next) {
 
 // socket.io events
 
-io.on( "connection", function(socket, nickname)
+io.on( "connection", function(socket)
 {
     
     console.log("connection detected");
@@ -106,38 +106,9 @@ io.on( "connection", function(socket, nickname)
 -/* Nickname check 
 */
 
-  socket.on('new_client', function(nickname, nickname_default) {
+  socket.on('new_client', function() {
         countConnection++;
-        socket.broadcast.emit("currentUsers", PLAYERS);
-        nickname = ent.encode(nickname);
-        socket.nickname = nickname;
-        console.log("nickname : "+nickname);
-
-        var i = 0; //
-        var error = 0;
-        for (var j = 0; j < nicknames.length; j++) {
-          if (nickname == nicknames[j]) {
-              error =+ 1;
-         }
-          else {
-            error =+ 0;
-          }
-        }
-        if (error == 0){
-          nicknames[i] = nickname;
-          console.log('nickname ok' + " --> " + nicknames[i]);
-          PLAYERS[nicknames[i]] = socket.id;
-          socket.broadcast.emit("currentUsers", PLAYERS);
-          i =+ 1;
-        }
-        else {
-          nicknames[i] = nickname_default;
-          nickname = nickname_default;
-          console.log('nickname already in use, replacing...' + " --> " + nicknames[i]);
-          PLAYERS[nicknames[i]] = socket.id;
-          socket.broadcast.emit("currentUsers", PLAYERS);
-         i =+ 1;
-       }
+        console.log(countConnection);
   });
 
 
@@ -164,6 +135,7 @@ io.on( "connection", function(socket, nickname)
       roomNameSendingString = roomNameSending.toString();
       socket.join(roomNameSendingString);
       console.log("client connecté sur la : "+roomNameSendingString);
+      io.sockets.in(roomNameSendingString).emit("roomName", roomNameSendingString);
 
   }
   else {
@@ -171,6 +143,8 @@ io.on( "connection", function(socket, nickname)
     roomNameSendingString = roomNameSending.toString();
     socket.join(roomNameSendingString);
     console.log("client connecté sur la : "+roomNameSendingString);
+    io.sockets.in(roomNameSendingString).emit("roomName", roomNameSendingString);
+
     CounterRoom++;
   }
 
@@ -179,28 +153,19 @@ io.on( "connection", function(socket, nickname)
   // envoyer nickname quand on est sur la zone de jeu.
 
       // Dès qu'on nous donne un pseudo, on le stocke en variable de session et on informe les autres personnes
-      socket.on('nouveau_client', function(pseudo) {
+      socket.on('nouveau_client', function(pseudo, room) {
           pseudo = ent.encode(pseudo);
           socket.pseudo = pseudo;
-          socket.broadcast.emit('nouveau_client', pseudo);
+          socket.broadcast.to(room).emit('nouveau_client', pseudo);
       });
 
       // Dès qu'on reçoit un message, on récupère le pseudo de son auteur et on le transmet aux autres personnes
-      socket.on('message', function (message) {
+      socket.on('message', function (message, room) {
           message = ent.encode(message);
-          socket.broadcast.emit('message', {pseudo: socket.pseudo, message: message});
+          socket.broadcast.to(room).emit('message', {pseudo: socket.pseudo, message: message});
       }); 
 
 });
 
 
 module.exports = app;
-
-/*
-TO ADD :
-Faction managing by using an object, and the 2 factions in it :
-  var nicknameTest = new Object(),
-      KeyAuth
-        nickname
-        faction
-*/

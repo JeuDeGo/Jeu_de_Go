@@ -1,24 +1,11 @@
 extends layout
 
 block content
-	form(action="/anon" method="post" id="nickname_form")
-		input(type="text" name="nickname" id="nickname" placeholder="Your nickname..." size="50" autofocus)
+	form(action="/vs" method="post" id="nickname_form")
 		input(type="submit" id="nickname_send" value="Send")
 
 	script.
 		// connection to socket.io
 		var socket = io.connect('http://localhost:3000');
-		var nickname_default = "user"+(Math.floor (Math.random() * 10001));
-		console.log(nickname_default+" (nickname alea before form)");
-	
-		$('#nickname_form').submit(function () {
-			var nickname = $('#nickname').val();
-			socket.emit('new_client', nickname, nickname_default);
-			console.log(nickname, nickname_default);
-			document.title = nickname + ' - ' + document.title;
-			socket.on("nickname_checked", function(nickname) {
-				console.log(nickname);
-			});
-		});
-
+		socket.emit('new_client');
 		
