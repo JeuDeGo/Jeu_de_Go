@@ -22,6 +22,8 @@ var PLAYERS = {
 var sourceId = "";
 var sourceNick = "";
 var countConnection = 0;
+var roomNameSending = "room0";
+var CounterRoom = 0;
 
 
 var COOKIE_SECRET = 'secret';
@@ -145,13 +147,6 @@ io.on( "connection", function(socket, nickname)
     console.log(game.ko);
   });
 
-  socket.on("attack", function(ennemyId, nickname){
-    sourceNick = nickname;
-    sourceId = PLAYERS[sourceNick];
-    socket(ennemyId).emit("underAttack", ennemyId, sourceNick, sourceId);
-    console.log("attack");
-  });
-
   socket.on("askForFaction", function(){
     console.log(countConnection%2);
     if (countConnection%2 == 0) {
@@ -163,6 +158,26 @@ io.on( "connection", function(socket, nickname)
       console.log("sending white");
     }
   });
+  socket.on("askForJoinRoom", function(){
+    if (countConnection%2 == 0) {
+      roomNameSending = "room"+CounterRoom;
+      roomNameSendingString = roomNameSending.toString();
+      socket.join(roomNameSendingString);
+      console.log("client connecté sur la : "+roomNameSendingString);
+
+  }
+  else {
+    roomNameSending = "room"+CounterRoom;
+    roomNameSendingString = roomNameSending.toString();
+    socket.join(roomNameSendingString);
+    console.log("client connecté sur la : "+roomNameSendingString);
+    CounterRoom++;
+  }
+
+  });
+
+  // envoyer nickname quand on est sur la zone de jeu.
+
 
 
 });
