@@ -40,9 +40,22 @@ block content
 	script.
 		// connection to socket.io
 		var socket = io.connect('http://localhost:3000');
+		var black = 0;
 		socket.emit("requestPlayers");
+		socket.emit("askForFaction");
 		socket.on("currentUsers", function(PLAYERS){
 			console.log(PLAYERS);
+			})
+
+
+		socket.on("black", function(){
+			console.log("faction : black");
+			black = true;
+
+			})
+		socket.on("white", function(){
+			console.log("faction : white");
+			black = false;
 			})
 		socket.on("board_refresh", function(game){
 			console.log("Board reçu");
