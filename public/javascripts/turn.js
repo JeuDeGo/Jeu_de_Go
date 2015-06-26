@@ -12,7 +12,7 @@ function turn() {
     }
     Game.data.pass = true;
     
-    var socket = io.connect('http://born2hack.herokuapp.com:443');
+    var socket = io.connect('https://born2hack.herokuapp.com:443');   
     io.sockets.in(room).emit("board_send", Game);
   }
 }
