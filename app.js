@@ -9,6 +9,8 @@ var users = require('./routes/users');
 var nsa = require('./routes/nsa');
 var vs = require('./routes/vs');
 var anon = require('./routes/anon');
+var rules = require('./routes/rules');
+var mail = require('./routes/mail');
 var ent = require('ent');
 var fs = require('fs');
 var app = express();
@@ -64,6 +66,8 @@ app.use('/users', users);
 app.use('/nsa', nsa);
 app.use('/vs', vs),
 app.use('/anon', anon);
+app.use('/rules', rules);
+app.use('/mail', mail);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -112,9 +116,9 @@ io.on( "connection", function(socket)
   });
 
 
-  socket.on("board_send", function(Game) {
+  socket.on("board_send", function(Game, room) {
     var game = Game;
-    socket.broadcast.emit("board_refresh", game);
+     socket.broadcast.to(room).emit("board_refresh", game);
     console.log(game.ko);
   });
 
@@ -150,16 +154,13 @@ io.on( "connection", function(socket)
 
   });
 
-  // envoyer nickname quand on est sur la zone de jeu.
-
-      // Dès qu'on nous donne un pseudo, on le stocke en variable de session et on informe les autres personnes
+//chat
       socket.on('nouveau_client', function(pseudo, room) {
           pseudo = ent.encode(pseudo);
           socket.pseudo = pseudo;
           socket.broadcast.to(room).emit('nouveau_client', pseudo);
       });
 
-      // Dès qu'on reçoit un message, on récupère le pseudo de son auteur et on le transmet aux autres personnes
       socket.on('message', function (message, room) {
           message = ent.encode(message);
           socket.broadcast.to(room).emit('message', {pseudo: socket.pseudo, message: message});

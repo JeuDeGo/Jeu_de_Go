@@ -31,7 +31,7 @@ ul {
     list-style: none;
 }
 
-ul button {
+ul input {
     float: left;
     position: relative;
     border-width:1px;

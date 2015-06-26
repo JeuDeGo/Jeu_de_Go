@@ -6,6 +6,17 @@ block content
 	link(rel='stylesheet', href='/stylesheets/index/accueil.css')
 	form(action="/vs" method="post" id="nickname_form")
 		input(type="submit" id="nickname_send" value="Send")
+		
+	div(id = "fond")
+	
+	ul(id = "accueil")
+		li
+			form(action="/vs" method="post")
+				input(id = "accueil1" type="submit" value="JOUER") 
+				
+		li
+			form(action="/rules" method="get")
+				input(id = "accueil2" type="submit" value="RÈGLES DU JEU")
 
 	script.
 		// connection to socket.io

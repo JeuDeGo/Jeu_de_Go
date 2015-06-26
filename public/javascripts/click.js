@@ -41,7 +41,7 @@ for (var i = 0; i < Game.data.td.length; i++) {
       }
 		}
     var socket = io.connect('http://localhost:3000');
-    socket.emit("board_send", Game);
+    socket.emit("board_send", Game, room);
 
 	});
 }

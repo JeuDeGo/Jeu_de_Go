@@ -1,11 +1,26 @@
 extends layout
 
 block content
+	link(rel='stylesheet', href='/stylesheets/vs/vs.css')
+
+	div(id = 'VS')
+		p() Choisissez votre camp
+
+	div(id = "NSA")
+		a(href="/nsa")
+			img(src="../../images/vs/NSA_VS.jpg" onmouseover="javascript:this.src='../../images/vs/NSA_VS_GIF.gif';" onmouseout="javascript:this.src='../../images/vs/NSA_VS.jpg';")
+			form(action="/nsa" method="post")
+				input(id = "nsaButton" type="submit" value="Choose the NSA") 
+
+	div(id = "ANONYMOUS")
+		img(src="../../images/vs/ANO_VS.jpg" onmouseover="javascript:this.src='../../images/vs/ANO_VS_GIF.gif';" onmouseout="javascript:this.src='../../images/vs/ANO_VS.jpg';")
+		form(action="/anon" method="post")
+			input(id = "anoButton" type="submit" value="Choose the Anonymous") 
 
 	script.
 		// connection to socket.io
 		var socket = io.connect('http://localhost:3000');		
 
 	
-	form(action="/nsa" method="post" id="attack_form")
+	form(action="/nsa" method="get" id="attack_form")
 		input(type="submit" id="attack_send" value="Send")

@@ -54,7 +54,7 @@ block content
 			console.log("faction : white");
 			black = false;
 			})
-		socket.on("board_refresh", function(game){
+		socket.on("board_refresh", function(game, room){
 			console.log("Board reçu");
 			Game.data = game.data;
 			Game.token = game.token;

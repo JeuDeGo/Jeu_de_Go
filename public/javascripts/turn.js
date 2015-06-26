@@ -12,6 +12,6 @@ function turn() {
     }
     Game.data.pass = true;
     var socket = io.connect('http://localhost:3000');
-    socket.emit("board_send", Game);
+    io.sockets.in(room).emit("board_send", Game);
   }
 }
