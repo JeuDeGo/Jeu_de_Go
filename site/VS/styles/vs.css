@@ -50,3 +50,39 @@ body {
     color: #ffffff;
 }
 
+#nsaButton {
+    float: left;
+    position: absolute;
+    text-align: center;
+    margin-top: -120px;
+    margin-left: 200px;
+    border-width:1px;
+    border-style:solid;
+    border-radius:5px;
+    border-color:black;
+    padding: 15px;
+    font-size: 40px;
+    font-family: 'DharmaGothic';
+    letter-spacing: 2px;
+    background-color: #CFDFE2;
+    cursor: pointer;
+}
+
+#anoButton {
+    float: left;
+    position: absolute;
+    text-align: center;
+    margin-top: -120px;
+    margin-left: 160px;
+    border-width:1px;
+    border-style:solid;
+    border-radius:5px;
+    border-color:black;
+    padding: 15px;
+    font-size: 40px;
+    font-family: 'DharmaGothic';
+    letter-spacing: 2px;
+    background-color: #CFDFE2;
+    cursor: pointer;
+
+}

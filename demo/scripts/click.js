@@ -36,6 +36,7 @@ for (var i = 0; i < Game.data.td.length; i++) {
         neighbourhood(explode[0], explode[1], Game.token[explode[0]][explode[1]].player);
 			}
       Game.data.player = ((Game.data.player == 'white') ? 'black' : 'white');
+      ia();
 		}
 	});
 }
