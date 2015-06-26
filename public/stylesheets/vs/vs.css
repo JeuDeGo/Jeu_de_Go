@@ -1,0 +1,52 @@
+/* VS */
+
+@font-face {
+    font-family: DharmaGothic;
+    src: url(../font/DharmaGothicE_Bold_R.otf);
+}
+
+/* VS */
+
+body {
+    margin-top: -16px;
+}
+
+#VS {
+    width: 100%; 
+    display: inline-block;
+}
+
+#NSA {
+    float: left;
+    border-right: 4px solid black;
+    box-sizing: border-box;
+    width: 50%;
+    height: 800px;
+}
+
+#NSA img, #ANONYMOUS img {
+    width: 100%;
+    height: 800px;
+}
+
+
+#ANONYMOUS {
+    border-left: 4px solid black;
+    box-sizing: border-box;
+    width: 50%;
+    height: 800px;
+    float: right;
+    
+}
+
+
+#VS p {
+    position: absolute;
+    font-size: 50px;
+    text-shadow: 0 0 7px rgba(0,0,0, 0.5);
+    font-family: 'DharmaGothic';
+    letter-spacing: 2px;
+    margin-left: 430px;
+    color: #ffffff;
+}
+
