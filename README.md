@@ -2,7 +2,7 @@ Alpha version of a Multiplayer Go game school project (HETIC).
 
 Name : Born 2 Hack
 
-Rules : in progress
+Rules : Refer to the rules of the Go game
 
 Langages : HTML5, CSS, JS (node.js, Vanilla JS)
 
