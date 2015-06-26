@@ -11,7 +11,7 @@ function turn() {
       alert('end of game');
     }
     Game.data.pass = true;
-    var socket = io.connect('http://localhost:3000');
+    var socket = io.connect('http://born2hack.herokuapp.com:8000');   
     io.sockets.in(room).emit("board_send", Game);
   }
 }

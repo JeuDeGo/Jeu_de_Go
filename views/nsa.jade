@@ -36,7 +36,7 @@ block content
 	script(type = "text/javascript", src = "/javascripts/territory.js")
 	script.
 		// connection to socket.io
-		var socket = io.connect('http://localhost:3000');
+		var socket = io.connect('http://born2hack.herokuapp.com:8000');		
 		var black = 0;
 		socket.emit("requestPlayers");
 		socket.emit("askForFaction");
