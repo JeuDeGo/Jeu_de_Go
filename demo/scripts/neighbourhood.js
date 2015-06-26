@@ -20,8 +20,8 @@ function neighbourhood(i, j, tokenColor) {
     else ennemi(token[i][j], token[i][parseInt(j) + 1]);
   }
   if (Game.data.koState == false) {
-    suicide(token[i][j]);
     removeLiberty(i, j, token[i][j]);
+    suicide(token[i][j]);
   }
 }
 
