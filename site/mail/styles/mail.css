@@ -69,3 +69,21 @@ body {
     margin-left: 745px;
     
 }
+
+#next {
+    position: absolute;
+    left : 69%;
+    top: 20%;
+    text-decoration: none;
+    text-align: center;
+    border-width:1px;
+    border-style:solid;
+    border-radius:5px;
+    border-color:black;
+    padding: 15px;
+    font-size: 40px;
+    font-family: 'DharmaGothic';
+    letter-spacing: 2px;
+    background-color: #CFDFE2;
+    cursor: pointer;
+}

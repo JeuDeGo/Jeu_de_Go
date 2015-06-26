@@ -48,9 +48,20 @@ ul button {
 }
 
 #accueil1 {
-    margin-left: 50px;
+    position: absolute;
+    margin-left: 55px;
+    margin-top: 80px;
 }
 
 #accueil2 {
-    margin-top: 30px;
+    position: absolute;
+    width: 200px;
+    margin-top: 180px;
+    margin-left: 10px;
+}
+
+#accueil3 {
+    position: absolute;
+    margin-top: -20px;
+    margin-left: 61px;
 }
