@@ -1,0 +1,56 @@
+
+body {
+    margin-top : -16px;
+    margin-bottom: 0;
+}
+
+@font-face {
+    font-family: DharmaGothic;
+    src: url(../../font/DharmaGothicE_Bold_R.otf);
+}
+
+
+/* ACCUEIL */
+
+#fond {
+    
+    position: absolute;
+    background-image: url('../../images/index/borntohack_bg.png');
+    width: 100%;
+    height: 100%;
+    
+}
+
+ul {
+    position: absolute;
+    top: 450px;
+    left: 530px;
+    margin: auto;
+    display: inline-block;
+    text-align: center;
+    list-style: none;
+}
+
+ul button {
+    float: left;
+    position: relative;
+    border-width:1px;
+    border-style:solid;
+    border-radius:5px;
+    border-color:black;
+    padding: 15px;
+    font-size: 40px;
+    font-family: 'DharmaGothic';
+    letter-spacing: 2px;
+    background-color: #CFDFE2;
+    cursor: pointer;
+
+}
+
+#accueil1 {
+    margin-left: 50px;
+}
+
+#accueil2 {
+    margin-top: 30px;
+}
