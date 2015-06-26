@@ -1,0 +1,23 @@
+extends layout
+
+block content
+
+    title= title
+    link(rel='stylesheet', href='/stylesheets/rules/rules.css')
+    div(id = "backgroundregles")
+    div(class="container")
+        div(id="regles")
+            h1() RÈGLES DU JEU  
+            p() Le go se joue à deux. L’un, Noir, prend les pierres noires, l’autre, Blanc, prend les pierres blanches. En début de partie, le goban est vide. C’est Noir qui commence à jouer en posant une de ses pierres sur une des intersections de la grille ; Blanc joue ensuite en posant une de ses pierres sur une intersection libre, et ainsi de suite. Les pierres ne seront jamais déplacées sur le goban. 
+            
+            h2() OBJECTIFS
+            p() Le but du jeu est d’occuper le plus d’espace possible(territoires) en utilisant un matériel très simple : une grille, appelée goban, et des pions, appelés pierres, qui sont soit noirs soit blancs et que l’on pose alternativement sur les intersections de la grille. 
+            p() Le goban est un damier sur lequel est tracée une grille de 19 lignes et 19 colonnes, soit 361 intersections. Il est fortement conseillé de jouer ses premières parties sur des gobans plus petits (9x9 ou 13x13 lignes, par exemple), ce qui facilite l’approche de la stratégie et permet de mieux assimiler les mécanismes du jeu.
+            p() La règle du jeu s’apprend en quelques minutes et elle permet au débutant de jouer des parties passionnantes. Au go, deux joueurs de force très différente peuvent jouer à égalité de chances grâce à un astucieux système de handicap, et cela sans dénaturer en rien les mécanismes du jeu.
+            
+            h2() RÈGLES DE PRISE
+            p() Quand on occupe la dernière liberté d’une pierre, celle-ci est prise et retirée du goban. On ne trouvera donc jamais sur le goban de pierre ne disposant d’aucune liberté.
+            p() Les pierres prises sont appelées prisonniers.
+
+            form(action="/" method="get")
+                input(id = "retour" type="submit" value="Retour")

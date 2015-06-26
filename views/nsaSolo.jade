@@ -1,0 +1,35 @@
+extends layout
+
+block content
+
+	link(rel='stylesheet', href='/stylesheets/nsa/styleNSA.css')
+	div(id = "terminal")
+		div(class = "output-console")
+		div(id = "gamePoint")
+			div(id = "blackPlayer")
+			div(id = "whitePlayer")
+		div(id = "areaGame")
+			table(id = "board")
+	div(id = "planete")
+	div(id = "score")
+	div(id = "mail")
+	div(id = "chat")
+		div(id="zoneChat")
+	div(id = "fichePerso")
+		div(id = "fichePseudo")
+
+	div()
+		a(id = 'pass' onclick = "turn()").
+			Pass your turn
+	script(type = "text/javascript", src = "/javascripts/solo/draw.js")
+	script(type = "text/javascript", src = "/javascripts/solo/libertyNumber.js")
+	script(type = "text/javascript", src = "/javascripts/solo/neighbourhood.js")
+	script(type = "text/javascript", src = "/javascripts/solo/removeToken.js")
+	script(type = "text/javascript", src = "/javascripts/solo/score.js")
+	script(type = "text/javascript", src = "/javascripts/solo/suicide.js")
+	script(type = "text/javascript", src = "/javascripts/solo/gameObject.js")
+	script(type = "text/javascript", src = "/javascripts/solo/click.js")
+	script(type = "text/javascript", src = "/javascripts/solo/ko.js")
+	script(type = "text/javascript", src = "/javascripts/solo/turn.js")
+	script(type = "text/javascript", src = "/javascripts/solo/territory.js")
+	script(type = "text/javascript", src = "/javascripts/solo/ia.js")

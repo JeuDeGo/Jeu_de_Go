@@ -1,0 +1,102 @@
+extends layout
+
+block content
+
+	link(rel='stylesheet', href='/stylesheets/anon/style.css')
+	link(rel='stylesheet', href='/stylesheets/anon/hack.css')
+
+	div(id = "terminal")
+		div(class = "output-console")
+		div(id = "gamePoint")
+			div(id = "blackPlayer")
+			div(id = "whitePlayer")
+		div(id = "areaGame")
+			table(id = "board")
+	div(id = "score")
+	div(id = "mail")
+	div(id = "chat")
+		div(id="zoneChat")
+		form(action="/" method="post" id="formulaire_chat")
+			input(type="text" name="message" id="message" placeholder="Votre message..." size="50" autofocus)
+			input(type="submit" id="envoi_message" value="Envoyer")
+	div(id = "fichePerso")
+		div(id = "fichePseudo")
+
+	div()
+		a(id = 'pass' onclick = "turn()").
+			Pass your turn
+	script(type = "text/javascript", src = "/javascripts/draw.js")
+	script(type = "text/javascript", src = "/javascripts/libertyNumber.js")
+	script(type = "text/javascript", src = "/javascripts/neighbourhood.js")
+	script(type = "text/javascript", src = "/javascripts/removeToken.js")
+	script(type = "text/javascript", src = "/javascripts/score.js")
+	script(type = "text/javascript", src = "/javascripts/suicide.js")
+	script(type = "text/javascript", src = "/javascripts/gameObject.js")
+	script(type = "text/javascript", src = "/javascripts/click.js")
+	script(type = "text/javascript", src = "/javascripts/ko.js")
+	script(type = "text/javascript", src = "/javascripts/turn.js")
+	script(type = "text/javascript", src = "/javascripts/territory.js")
+	script(type = "text/javascript", src = "/javascripts/hack.js")
+
+	script.
+		// connection to socket.io
+		var socket = io.connect();
+		var black = 0;
+		socket.emit("requestPlayers");
+		socket.emit("askForFaction");
+
+
+		socket.on("black", function(){
+			console.log("faction : black");
+			black = true;
+			var pseudoHTML = document.querySelector('#fichePseudo');
+			pseudoHTML.innerHTML = (pseudo + ' (Black)');
+			})
+		socket.on("white", function(){
+			console.log("faction : white");
+			black = false;
+			var pseudoHTML = document.querySelector('#fichePseudo');
+			pseudoHTML.innerHTML = (pseudo + ' (Black)');
+			})
+		socket.on("board_refresh", function(game, room){
+			console.log("Board reçu");
+			Game.data = game.data;
+			Game.token = game.token;
+			Game.ko = game.ko;
+			console.log(Game);
+			drawAgain();
+
+			});
+		socket.emit("askForJoinRoom");
+
+		var pseudo = prompt('Quel est votre pseudo ?');
+		socket.emit('nouveau_client', pseudo);
+		document.title = pseudo + ' - ' + document.title;
+		// Quand on reçoit un message, on l'insère dans la page
+		socket.on('message', function(data) {
+			insereMessage(data.pseudo, data.message)
+		})
+		var room = "";
+		socket.on("roomName", function(roomNameSendingString){
+			room = roomNameSendingString;
+			console.log("room OK");
+			console.log(typeof room);
+			})
+		
+		// Quand un nouveau client se connecte, on affiche l'information
+		socket.on('nouveau_client', function(pseudo, room) {
+			$('#zoneChat').prepend('<p><em>' + pseudo + ' a rejoint le Chat !</em></p>');
+		})
+
+		// Lorsqu'on envoie le formulaire, on transmet le message et on l'affiche sur la page
+		$('#formulaire_chat').submit(function() {
+			var message = $('#message').val();
+			socket.emit('message', message, room); // Transmet le message aux autres
+			insereMessage(pseudo, message); // Affiche le message aussi sur notre page
+			$('#message').val('').focus(); // Vide la zone de Chat et remet le focus dessus
+			return false; // Permet de bloquer l'envoi "classique" du formulaire
+		});
+		// Ajoute un message dans la page
+		function insereMessage(pseudo, message) {
+			$('#zoneChat').prepend('<p><strong>' + pseudo + " : "+'</strong> ' + message + '</p>');
+		}

@@ -1,0 +1,24 @@
+extends layout
+
+block content
+
+    title= title
+    link(rel='stylesheet', href='/stylesheets/mail/mail.css')
+
+    div(id="background")
+        div(id="bouton1")
+            div(class="bouton") OUVRIR
+        div(id="bouton2")
+            div(class="bouton") OUVRIR
+        div(id="bouton3")
+            div(class="bouton") OUVRIR
+        form(action="/vs" method="post")
+            input(id = "next" type="submit" value="NEXT") 
+        audio(id = 'audio1')
+            source(src="audio/beaux.mp3" type="audio/mpeg")
+        audio(id = 'audio2')
+            source(src="audio/nsa.mp3" type="audio/mpeg")
+        audio(id = 'audio3')
+            source(src="audio/anonymous.mp3" type="audio/mpeg")
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js")
+    script(type="text/javascript" src="/javascripts/mail.js")
