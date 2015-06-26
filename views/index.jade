@@ -1,6 +1,10 @@
 extends layout
 
 block content
+
+	title= title
+	link(rel='stylesheet', href='/stylesheets/index/accueil.css')
+	
 	form(action="/vs" method="post" id="nickname_form")
 		input(type="submit" id="nickname_send" value="Send")
 

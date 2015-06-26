@@ -13,12 +13,16 @@ function scoreTerritory() {
       if (Game.token[i][j].territory == true) {
         if (Game.token[i][j].black == true && Game.token[i][j].white == false) {
           var html = document.getElementById(Game.token[i][j].i + '_' + Game.token[i][j].j);
+          Game.token[i][j] = new Game.constructor.CreateToken(i, j);
+          Game.token[i][j].player = 'black';
 
           Game.data.pointBlackPlayer++;
           html.className = 'tokenBlack';
         }
         else if (Game.token[i][j].white == true && Game.token[i][j].black == false) {
           var html = document.getElementById(Game.token[i][j].i + '_' + Game.token[i][j].j);
+          Game.token[i][j] = new Game.constructor.CreateToken(i, j);
+          Game.token[i][j].player = 'white';
 
           Game.data.pointWhitePlayer++;
           html.className = 'tokenWhite';

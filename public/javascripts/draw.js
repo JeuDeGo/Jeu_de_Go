@@ -69,7 +69,8 @@ function drawAgain() {
       draw += "<td class = "
       if (Game.token[i][j] != undefined) {
         if (Game.token[i][j].player == 'white') draw += 'tokenWhite';
-        else draw += 'tokenBlack';
+        else if (Game.token[i][j].player == 'black') draw += 'tokenBlack';
+        else draw += setClass(i, j);
       }
       else draw += setClass(i, j);
       draw += " id='"+ i + "_" + j + "'></td>";
@@ -77,4 +78,6 @@ function drawAgain() {
     draw += "</tr>";
   }
   html.innerHTML = draw;
+  gamePoint(Game.data.pointBlackPlayer, 'blackPlayer', 'black');
+  gamePoint(Game.data.pointWhitePlayer, 'whitePlayer', 'white');
 }

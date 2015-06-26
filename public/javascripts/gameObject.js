@@ -16,6 +16,7 @@ var Game = {
 		CreateToken : function(i, j) {
 			this.i = parseInt(i);
 			this.j = parseInt(j);
+      this.territory = false;
 			this.player = Game.data.player;
 			this.liberty = libertyNumber(i, j);
 			this.friendTabPosition = new Array();
