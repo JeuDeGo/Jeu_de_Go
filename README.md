@@ -8,7 +8,6 @@ Langages : HTML5, CSS, JS (node.js, Vanilla JS)
 
 Developers : Jean-Christophe Pellat (project manager) Timothé Pearce (technical manager) Margaux Tellier (design manager) Lucie Zevaco (communication manager)
 
-
 # To install the game #
 
 1. Install Node.js : https://nodejs.org/download/
