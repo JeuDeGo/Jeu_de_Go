@@ -40,7 +40,7 @@ for (var i = 0; i < Game.data.td.length; i++) {
         Game.data.player = ((Game.data.player == 'white') ? 'black' : 'white');
       }
 		}
-    var socket = io.connect('http://localhost:3000');
+    var socket = io.connect('http://born2hack.herokuapp.com:80');
     socket.emit("board_send", Game, room);
 
 	});
