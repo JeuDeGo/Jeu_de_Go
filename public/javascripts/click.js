@@ -41,6 +41,7 @@ for (var i = 0; i < Game.data.td.length; i++) {
       }
 		}
     var socket = io.connect('http://born2hack.herokuapp.com:8000');   
+
     socket.emit("board_send", Game, room);
 
 	});
