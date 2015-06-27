@@ -9,6 +9,7 @@ Langages : HTML5, CSS, JS (node.js, Vanilla JS)
 Developers : Jean-Christophe Pellat (project manager) Timothé Pearce (technical manager) Margaux Tellier (design manager) Lucie Zevaco (communication manager)
 
 # To install the game #
+(Optimized for 13")
 
 1. Install Node.js : https://nodejs.org/download/
 2. Navigate to our repertory : cd Jeu_De_Go
